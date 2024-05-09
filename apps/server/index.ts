@@ -1,13 +1,21 @@
-import express from 'express'
+import express, { Express } from "express";
+import helmet from "helmet";
+import cors from "cors";
 
-const app = express()
+import router from "./src/routes";
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const app: Express = express();
+const port = process.env.SERVER_PORT || 4000;
 
-const PORT = process.env.SERVER_PORT || 4000
+app.use(cors());
+app.use(helmet());
+app.use(express.json());
 
-app.listen(PORT, () => {
-  console.info(`Example app listening on port ${PORT}`)
-})
+app.use("/api", router);
+app.use("/", (req, res) => {
+  res.status(200).json({ message: "Talk To Your Documents API" });
+});
+
+app.listen(port, () => {
+  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+});
