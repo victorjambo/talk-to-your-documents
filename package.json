@@ -1,5 +1,8 @@
 {
   "name": "talk-to-your-documents",
+  "description": "AI Knowledge base",
+  "author": "victormutaijambo@gmail.com",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "build": "turbo build",

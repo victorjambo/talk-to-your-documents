@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "PORT=4000 concurrently \"npx tsc --watch\" \"nodemon -q dist/app.js\"",
+    "build": "npx tsc",
+    "start": "node dist/app.js",
+    "test": "echo 'Add test script here'",
+    "lint": "echo 'Add lint script here'",
+    "prisma:migrate": "npx prisma migrate dev",
+    "prisma:seed": "ts-node prisma/seed.ts",
+    "prisma:dump": "npx prisma migrate reset --force && npx prisma migrate deploy"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*"
+  }
+}
