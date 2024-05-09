@@ -12,8 +12,7 @@
     "prisma:migrate:create": "npx prisma migrate dev --create-only",
     "prisma:migrate": "npx prisma migrate dev",
     "prisma:seed": "ts-node prisma/seed.ts",
-    "prisma:dump": "npx prisma migrate reset --force && npx prisma migrate deploy",
-    "prisma:generate": "npx prisma generate"
+    "prisma:dump": "npx prisma migrate reset --force && npx prisma migrate deploy"
   },
   "dependencies": {
     "@langchain/community": "^0.0.55",
