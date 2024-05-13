@@ -14,7 +14,7 @@ export default function RootLayout({
 }): JSX.Element {
   return (
     <html lang="en">
-      <body className="container mx-auto">{children}</body>
+      <body className="">{children}</body>
     </html>
   );
 }
