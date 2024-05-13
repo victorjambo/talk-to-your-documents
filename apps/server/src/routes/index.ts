@@ -8,7 +8,7 @@ const documentsRouter = (): Router => {
   const router = Router();
   const upload = multer();
 
-  router.get("/", documentsController.queryDocuments); // search with query
+  router.post("/", documentsController.queryDocuments); // search with query
   router.post("/create", upload.array('documents', 12), documentsController.createDocument); // create embeddings and vectors
 
   return router;
