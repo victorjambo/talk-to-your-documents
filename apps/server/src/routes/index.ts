@@ -1,24 +1,19 @@
 import { Router } from "express";
 
-import DatabaseManagement from "../helpers/database";
+import DocumentsController from "../controllers/documents.controller";
 
-const sanityRouter = (): Router => {
+const documentsRouter = (): Router => {
+  const documentsController = new DocumentsController();
   const router = Router();
-  router.get("/", async (req, res) => {
-    const db = new DatabaseManagement();
 
-    const prompt = "What is the capital of Kenya?";
+  router.get("/", documentsController.queryDocuments); // search with query
+  router.post("/create", documentsController.createDocument); // create embeddings and vectors
 
-    const result = await db.getSimilarDocumentsFromStore(prompt);
-    console.log("🚀 ~ router.get ~ result:", result);
-
-    res.status(200).json({ status: "OK" });
-  });
   return router;
 };
 
 const router: Router = Router();
 
-router.use("/sanity", sanityRouter());
+router.use("/documents", documentsRouter());
 
 export default router;

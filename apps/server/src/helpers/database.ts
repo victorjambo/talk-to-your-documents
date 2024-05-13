@@ -3,40 +3,41 @@ import {
   ChatPromptTemplate,
   MessagesPlaceholder,
 } from "@langchain/core/prompts";
-import { PrismaVectorStore } from "@langchain/community/vectorstores/prisma";
+import {
+  PrismaSqlFilter,
+  PrismaVectorStore,
+} from "@langchain/community/vectorstores/prisma";
 import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
 import { PrismaClient, Prisma, Document } from "@prisma/client";
 import { PostgresChatMessageHistory } from "@langchain/community/stores/message/postgres";
-import { RunnableWithMessageHistory } from "@langchain/core/runnables";
+import {
+  Runnable,
+  RunnableConfig,
+  RunnableWithMessageHistory,
+} from "@langchain/core/runnables";
 import { StringOutputParser } from "@langchain/core/output_parsers";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_LLM_MODEL = process.env.OPENAI_LLM_MODEL;
 
+type TStore = PrismaVectorStore<
+  Document,
+  "Document",
+  { [K in keyof Document]?: true },
+  PrismaSqlFilter<Document>
+>;
+
 class DatabaseManagement {
-  private db: PrismaClient;
+  protected db: PrismaClient;
 
-  constructor() {
+  protected tableName: string;
+
+  constructor(tableName: string) {
     this.db = new PrismaClient();
+    this.tableName = tableName;
   }
 
-  public async createDocument(texts: string[]) {
-    const vectorStore = this.createStore();
-
-    await vectorStore.addModels(
-      await this.db.$transaction(
-        texts.map((content) => this.db.document.create({ data: { content } }))
-      )
-    );
-  }
-
-  public async getSimilarDocumentsFromStore(query: string) {
-    const vectorStore = this.createStore();
-
-    return vectorStore.similaritySearch(query);
-  }
-
-  private createStore() {
+  protected createStore(): TStore {
     return PrismaVectorStore.withModel<Document>(this.db).create(
       new OpenAIEmbeddings({
         apiKey: OPENAI_API_KEY,
@@ -55,55 +56,7 @@ class DatabaseManagement {
     );
   }
 
-  /**
-   * chat
-   */
-  public async chatWithHistory(inputPrompt: string, documents: string[]) {
-    const pool = this.pool();
-
-    const model = new ChatOpenAI();
-
-    const prompt = ChatPromptTemplate.fromMessages([
-      [
-        "system",
-        `You are a helpful assistant. Using the context Answer all questions to the best of your ability. Context: ${documents.join(
-          "\n\n"
-        )}`,
-      ],
-      new MessagesPlaceholder("chat_history"),
-      ["human", "{input}"],
-    ]);
-
-    const chain = prompt.pipe(model).pipe(new StringOutputParser());
-
-    const chainWithHistory = new RunnableWithMessageHistory({
-      runnable: chain,
-      inputMessagesKey: "input",
-      historyMessagesKey: "chat_history",
-      getMessageHistory: async (sessionId) => {
-        const chatHistory = new PostgresChatMessageHistory({
-          sessionId,
-          pool,
-          // Can also pass `poolConfig` to initialize the pool internally,
-          // but easier to call `.end()` at the end later.
-        });
-        return chatHistory;
-      },
-    });
-
-    const response = await chainWithHistory
-      .invoke(
-        {
-          input: inputPrompt,
-        },
-        { configurable: { sessionId: "langchain-test-session" } }
-      )
-      .finally(() => this.poolEnd(pool));
-
-    return response;
-  }
-
-  private pool() {
+  protected pool() {
     return new pg.Pool({
       host: "127.0.0.1",
       port: 5432,
@@ -113,8 +66,46 @@ class DatabaseManagement {
     });
   }
 
-  private async poolEnd(pool: pg.Pool) {
+  protected async poolEnd(pool: pg.Pool) {
     await pool.end();
+  }
+
+  public async runnableMessageHistory(
+    chain: Runnable<any, string, RunnableConfig>
+  ): Promise<{
+    history: RunnableWithMessageHistory<any, string>;
+    callback: () => void;
+  }> {
+    const pool = this.pool();
+
+    return {
+      history: new RunnableWithMessageHistory({
+        runnable: chain,
+        inputMessagesKey: "input",
+        historyMessagesKey: "chat_history",
+        getMessageHistory: async (sessionId) => {
+          const chatHistory = new PostgresChatMessageHistory({
+            sessionId,
+            pool,
+            // Can also pass `poolConfig` to initialize the pool internally,
+            // but easier to call `.end()` at the end later.
+          });
+          return chatHistory;
+        },
+      }),
+      callback: () => this.poolEnd(pool)
+    }
+
+    // const response = await chainWithHistory
+    //   .invoke(
+    //     {
+    //       input: inputPrompt,
+    //     },
+    //     { configurable: { sessionId: "langchain-test-session" } }
+    //   )
+    //   .finally(() => this.poolEnd(pool));
+
+    // return response;
   }
 }
 
