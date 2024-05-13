@@ -4,7 +4,7 @@ import {
   MessagesPlaceholder,
 } from "@langchain/core/prompts";
 import { ChatOpenAI } from "@langchain/openai";
-import DatabaseManagement from "src/helpers/database";
+import DatabaseManagement from "../helpers/database";
 
 class DocumentsModel extends DatabaseManagement {
   private static tableName = "Document";
@@ -16,11 +16,15 @@ class DocumentsModel extends DatabaseManagement {
   public async createDocument(texts: string[]) {
     const vectorStore = this.createStore();
 
-    await vectorStore.addModels(
-      await this.db.$transaction(
-        texts.map((content) => this.db.document.create({ data: { content } }))
-      )
-    );
+    try {
+      await vectorStore.addModels(
+        await this.db.$transaction(
+          texts.map((content) => this.db.document.create({ data: { content } }))
+        )
+      );
+    } catch (error) {
+      throw new Error(`Error creating document: ${error}`);
+    }
   }
 
   public async getSimilarDocumentsFromStore(query: string) {
