@@ -79,8 +79,6 @@ class DatabaseManagement {
           const chatHistory = new PostgresChatMessageHistory({
             sessionId,
             pool,
-            // Can also pass `poolConfig` to initialize the pool internally,
-            // but easier to call `.end()` at the end later.
           });
           return chatHistory;
         },

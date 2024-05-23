@@ -27,7 +27,8 @@ class DocumentsController {
 
       const message = await model.chatWithHistory(
         query,
-        searchResults.map((doc) => doc.pageContent)
+        searchResults.map((doc) => doc.pageContent),
+        chatId
       );
 
       res.status(200).json({ message });
