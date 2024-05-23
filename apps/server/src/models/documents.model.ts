@@ -9,8 +9,10 @@ import DatabaseManagement from "../helpers/database";
 class DocumentsModel extends DatabaseManagement {
   private static tableName = "Document";
 
+  private static historyTableName = "chat_history";
+
   constructor() {
-    super(DocumentsModel.tableName);
+    super(DocumentsModel.tableName, DocumentsModel.historyTableName);
   }
 
   public async createDocument(texts: string[], chatId: string): Promise<void> {
@@ -19,7 +21,9 @@ class DocumentsModel extends DatabaseManagement {
     try {
       await vectorStore.addModels(
         await this.db.$transaction(
-          texts.map((content) => this.db.document.create({ data: { content, chatId } }))
+          texts.map((content) =>
+            this.db.document.create({ data: { content, chatId } })
+          )
         )
       );
     } catch (error) {

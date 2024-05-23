@@ -35,6 +35,20 @@ class ChatModel {
       },
     });
   }
+
+  public async updateChat(
+    chatId: string,
+    data: Chat,
+    includeDocuments: boolean = false
+  ): Promise<Chat> {
+    return this.prisma.chat.update({
+      where: { id: chatId },
+      data,
+      include: {
+        documents: includeDocuments,
+      },
+    });
+  }
 }
 
 export default ChatModel;

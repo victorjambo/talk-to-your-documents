@@ -3,7 +3,7 @@ import multer from "multer";
 
 import DocumentsController from "../controllers/documents.controller";
 import ChatsController from "../controllers/chats.controller";
-import { IDocumentCreateRequest } from "src/types";
+import { IDocumentCreateRequest, IDocumentUpdateRequest } from "src/types";
 
 const documentsRouter = (): Router => {
   const documentsController = new DocumentsController();
@@ -11,6 +11,12 @@ const documentsRouter = (): Router => {
   const upload = multer();
 
   router.post("/", documentsController.queryDocuments); // search with query
+  router.put(
+    "/:chatId",
+    upload.array("documents", 12),
+    (req: Request, res: Response) =>
+      documentsController.updateDocument(req as IDocumentUpdateRequest, res)
+  ); // Add documents to a chat
   router.post(
     "/create",
     upload.array("documents", 12),

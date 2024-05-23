@@ -28,9 +28,12 @@ class DatabaseManagement {
 
   protected tableName: string;
 
-  constructor(tableName: string) {
+  protected historyTableName: string;
+
+  constructor(tableName: string, historyTableName?: string) {
     this.db = new PrismaClient();
     this.tableName = tableName;
+    this.historyTableName = historyTableName ?? "chat_history";
   }
 
   protected createStore(): TStore {
@@ -70,18 +73,23 @@ class DatabaseManagement {
   }> {
     const pool = this.pool();
 
+    const history = async (
+      sessionId: string
+    ): Promise<PostgresChatMessageHistory> => {
+      const chatHistory = new PostgresChatMessageHistory({
+        sessionId,
+        pool,
+        tableName: this.historyTableName,
+      });
+      return chatHistory;
+    };
+
     return {
       history: new RunnableWithMessageHistory({
         runnable: chain,
+        getMessageHistory: history,
         inputMessagesKey: "input",
         historyMessagesKey: "chat_history",
-        getMessageHistory: async (sessionId) => {
-          const chatHistory = new PostgresChatMessageHistory({
-            sessionId,
-            pool,
-          });
-          return chatHistory;
-        },
       }),
       callback: () => this.poolEnd(pool),
     };

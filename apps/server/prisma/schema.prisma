@@ -29,3 +29,9 @@ model Chat {
   fileNames String[]   @default([])
   documents Document[]
 }
+
+model chat_history {
+  id         Int    @id @default(autoincrement())
+  session_id String
+  message    Json
+}
