@@ -27,10 +27,12 @@ class DocumentsModel extends DatabaseManagement {
     }
   }
 
-  public async getSimilarDocumentsFromStore(query: string) {
+  public async getSimilarDocumentsFromStore(query: string, chatId: string) {
     const vectorStore = this.createStore();
 
-    return vectorStore.similaritySearch(query);
+    return vectorStore.similaritySearch(query, undefined, {
+      chatId: { equals: chatId },
+    });
   }
 
   public async chatWithHistory(

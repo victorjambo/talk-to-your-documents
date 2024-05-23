@@ -13,16 +13,17 @@ class DocumentsController {
   ): Promise<void> {
     try {
       const query = req.body.query;
-      if (!query) {
+      const chatId = req.body.chatId;
+      if (!query || !chatId) {
         res.status(400).json({
-          error: "Query parameter is required",
+          error: "Query and chatId parameters are required",
         });
         return;
       }
 
       const model = new DocumentsModel();
 
-      const searchResults = await model.getSimilarDocumentsFromStore(query);
+      const searchResults = await model.getSimilarDocumentsFromStore(query, chatId);
 
       const message = await model.chatWithHistory(
         query,
