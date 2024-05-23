@@ -9,10 +9,12 @@
     "lint": "eslint . --quiet",
     "test": "echo 'Add test script here'",
     "type:check": "npx tsc --noEmit",
-    "prisma:migrate:create": "npx prisma migrate dev --create-only",
-    "prisma:migrate": "npx prisma migrate dev",
-    "prisma:seed": "ts-node prisma/seed.ts",
-    "prisma:dump": "npx prisma migrate reset --force && npx prisma migrate deploy"
+    "db:dump": "npx prisma migrate reset --force",
+    "db:generate": "prisma generate",
+    "db:migrate:create": "npx prisma migrate dev --create-only",
+    "db:migrate": "npx prisma migrate dev",
+    "db:push": "prisma db push --skip-generate",
+    "db:seed": "prisma db seed"
   },
   "dependencies": {
     "@langchain/community": "^0.0.55",

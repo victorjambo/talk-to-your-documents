@@ -8,7 +8,7 @@ import {
   PrismaVectorStore,
 } from "@langchain/community/vectorstores/prisma";
 import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
-import { PrismaClient, Prisma, Document } from "@prisma/client";
+import { PrismaClient, Prisma, Document } from ".prisma";
 import { PostgresChatMessageHistory } from "@langchain/community/stores/message/postgres";
 import {
   Runnable,
