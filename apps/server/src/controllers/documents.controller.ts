@@ -1,11 +1,16 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 
 import DocumentsModel from "../models/documents.model";
 import DocumentLoaders from "../helpers/document_loaders";
 import DocumentManagement from "../helpers/document_management";
+import ChatModal from "../models/chat.model";
+import { IDocumentQueryRequest, IDocumentCreateRequest } from "../types";
 
 class DocumentsController {
-  public async queryDocuments(req: Request, res: Response): Promise<void> {
+  public async queryDocuments(
+    req: IDocumentQueryRequest,
+    res: Response
+  ): Promise<void> {
     try {
       const query = req.body.query;
       if (!query) {
@@ -33,9 +38,13 @@ class DocumentsController {
     }
   }
 
-  public async createDocument(req: Request, res: Response): Promise<void> {
+  public async createDocument(
+    req: IDocumentCreateRequest,
+    res: Response
+  ): Promise<void> {
     try {
       const files = req.files;
+      console.log("🚀 ~ DocumentsController ~ files:", files);
       if (!files || !files.length) {
         res.status(400).json({
           error: "Files are required",
@@ -43,9 +52,14 @@ class DocumentsController {
         return;
       }
 
-      const documentLoader = new DocumentLoaders(
-        files as Express.Multer.File[]
-      );
+      const body = req.body;
+      const title = body.chatName ?? "Untitled Chat";
+      const fileNames = files.map((file) => file.originalname);
+
+      const chatModal = new ChatModal();
+      const chat = await chatModal.createChat({ title, fileNames });
+
+      const documentLoader = new DocumentLoaders(files);
       const documents = await documentLoader.load();
 
       const texts = await Promise.all(
@@ -56,7 +70,7 @@ class DocumentsController {
 
       const model = new DocumentsModel();
 
-      await model.createDocument(texts);
+      await model.createDocument(texts, chat.id);
 
       res.status(201).json({ message: "OK" });
     } catch (err) {

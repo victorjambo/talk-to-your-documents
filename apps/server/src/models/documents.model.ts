@@ -13,13 +13,13 @@ class DocumentsModel extends DatabaseManagement {
     super(DocumentsModel.tableName);
   }
 
-  public async createDocument(texts: string[]) {
+  public async createDocument(texts: string[], chatId: string): Promise<void> {
     const vectorStore = this.createStore();
 
     try {
       await vectorStore.addModels(
         await this.db.$transaction(
-          texts.map((content) => this.db.document.create({ data: { content } }))
+          texts.map((content) => this.db.document.create({ data: { content, chatId } }))
         )
       );
     } catch (error) {
@@ -35,7 +35,8 @@ class DocumentsModel extends DatabaseManagement {
 
   public async chatWithHistory(
     inputPrompt: string,
-    documents: string[]
+    documents: string[],
+    sessionId: string = "langchain-test-session"
   ): Promise<string> {
     const model = new ChatOpenAI();
 
@@ -59,7 +60,7 @@ class DocumentsModel extends DatabaseManagement {
         {
           input: inputPrompt,
         },
-        { configurable: { sessionId: "langchain-test-session" } }
+        { configurable: { sessionId } }
       )
       .finally(() => callback());
 

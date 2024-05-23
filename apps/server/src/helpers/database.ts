@@ -1,24 +1,20 @@
 import pg from "pg";
 import {
-  ChatPromptTemplate,
-  MessagesPlaceholder,
-} from "@langchain/core/prompts";
-import {
   PrismaSqlFilter,
   PrismaVectorStore,
 } from "@langchain/community/vectorstores/prisma";
-import { OpenAIEmbeddings, ChatOpenAI } from "@langchain/openai";
-import { PrismaClient, Prisma, Document } from ".prisma";
+import { OpenAIEmbeddings } from "@langchain/openai";
 import { PostgresChatMessageHistory } from "@langchain/community/stores/message/postgres";
 import {
   Runnable,
   RunnableConfig,
   RunnableWithMessageHistory,
 } from "@langchain/core/runnables";
-import { StringOutputParser } from "@langchain/core/output_parsers";
+import { PrismaClient, Prisma, Document } from ".prisma";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_LLM_MODEL = process.env.OPENAI_LLM_MODEL;
+const DATABASE_URL = process.env.DATABASE_URL;
 
 type TStore = PrismaVectorStore<
   Document,
@@ -58,11 +54,7 @@ class DatabaseManagement {
 
   protected pool() {
     return new pg.Pool({
-      host: "127.0.0.1",
-      port: 5432,
-      user: "postgres",
-      password: "password",
-      database: "vectors",
+      connectionString: DATABASE_URL,
     });
   }
 
@@ -93,19 +85,8 @@ class DatabaseManagement {
           return chatHistory;
         },
       }),
-      callback: () => this.poolEnd(pool)
-    }
-
-    // const response = await chainWithHistory
-    //   .invoke(
-    //     {
-    //       input: inputPrompt,
-    //     },
-    //     { configurable: { sessionId: "langchain-test-session" } }
-    //   )
-    //   .finally(() => this.poolEnd(pool));
-
-    // return response;
+      callback: () => this.poolEnd(pool),
+    };
   }
 }
 
