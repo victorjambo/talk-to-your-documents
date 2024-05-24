@@ -1,4 +1,4 @@
-import express, { Express } from "express";
+import express, { Express, Request, Response } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -15,7 +15,10 @@ app.use(helmet());
 app.use(express.json());
 
 app.use("/api", router);
-app.use("/", (req, res) => {
+app.use("/health", (req: Request, res: Response) => {
+  res.status(200).send("OK");
+});
+app.use("/", (req: Request, res: Response) => {
   res.status(200).json({ message: "Talk To Your Documents API" });
 });
 
