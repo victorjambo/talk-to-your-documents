@@ -1,13 +1,16 @@
 "use client";
 import { Fragment, useState } from "react";
+
 import MobileSidebar from "./sidebar/mobile";
 import DesktopSidebar from "./sidebar/desktop";
 import MobileNavbar from "./sidebar/navbar";
+import Files from "./files";
+import MainChats from "./mainChats";
 
 const chats = [
   { id: 1, name: "Heroicons", href: "#", initial: "H", current: false },
   { id: 2, name: "Tailwind Labs", href: "#", initial: "T", current: false },
-  { id: 3, name: "Presidents", href: "#", initial: "W", current: false },
+  { id: 3, name: "Presidents", href: "#", initial: "P", current: false },
 ];
 
 export default function Dashboard() {
@@ -27,17 +30,15 @@ export default function Dashboard() {
         <MobileNavbar chatTitle={chatTitle} setSidebarOpen={setSidebarOpen} />
       </Fragment>
 
-      <main className="lg:pl-72 bg-[#f8f8f8] h-screen">
-        <div className="xl:pr-96">
-          <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
-            {/* Main area */}
+      {/* Main */}
+      <div className="lg:ml-72 bg-stone-50 h-screen">
+        <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 grid-rows-1 items-start gap-x-8 gap-y-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+            <MainChats />
+            <Files />
           </div>
         </div>
-      </main>
-
-      <aside className="fixed inset-y-0 right-0 hidden w-96 overflow-y-auto border-l border-gray-200 px-4 py-6 sm:px-6 lg:px-8 xl:block">
-        {/* Secondary column (hidden on smaller screens) */}
-      </aside>
+      </div>
     </div>
   );
 }
