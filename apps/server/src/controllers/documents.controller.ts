@@ -5,13 +5,14 @@ import DocumentsModel from "../models/documents.model";
 import DocumentLoaders from "../helpers/document_loaders";
 import DocumentManagement from "../helpers/document_management";
 import ChatModal from "../models/chat.model";
-import {
+import type {
   IDocumentQueryRequest,
   IDocumentCreateRequest,
   IDocumentUpdateRequest,
+  IDocumentsController,
 } from "../types";
 
-class DocumentsController {
+class DocumentsController implements IDocumentsController {
   public async queryDocuments(
     req: IDocumentQueryRequest,
     res: Response

@@ -3,3 +3,7 @@ export * from "./IDocumentUpdateRequest";
 export * from "./IDocumentQueryRequest";
 export * from "./IGetChatRequest";
 export * from "./ICreateChatRequest";
+export * from "./IChatModel";
+export * from "./TDocumentStore";
+export * from "./IChatsController";
+export * from "./IDocumentsController";

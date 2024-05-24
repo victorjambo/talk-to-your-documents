@@ -4,6 +4,7 @@ import {
   MessagesPlaceholder,
 } from "@langchain/core/prompts";
 import { ChatOpenAI } from "@langchain/openai";
+
 import DatabaseManagement from "../helpers/database";
 
 class DocumentsModel extends DatabaseManagement {

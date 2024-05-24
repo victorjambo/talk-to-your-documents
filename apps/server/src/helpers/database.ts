@@ -1,8 +1,5 @@
 import pg from "pg";
-import {
-  PrismaSqlFilter,
-  PrismaVectorStore,
-} from "@langchain/community/vectorstores/prisma";
+import { PrismaVectorStore } from "@langchain/community/vectorstores/prisma";
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { PostgresChatMessageHistory } from "@langchain/community/stores/message/postgres";
 import {
@@ -10,18 +7,13 @@ import {
   RunnableConfig,
   RunnableWithMessageHistory,
 } from "@langchain/core/runnables";
+
 import { PrismaClient, Prisma, Document } from ".prisma";
+import type { TDocumentStore } from "../types";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_LLM_MODEL = process.env.OPENAI_LLM_MODEL;
 const DATABASE_URL = process.env.DATABASE_URL;
-
-type TStore = PrismaVectorStore<
-  Document,
-  "Document",
-  { [K in keyof Document]?: true },
-  PrismaSqlFilter<Document>
->;
 
 class DatabaseManagement {
   protected db: PrismaClient;
@@ -36,7 +28,7 @@ class DatabaseManagement {
     this.historyTableName = historyTableName ?? "chat_history";
   }
 
-  protected createStore(): TStore {
+  protected createStore(): TDocumentStore {
     return PrismaVectorStore.withModel<Document>(this.db).create(
       new OpenAIEmbeddings({
         apiKey: OPENAI_API_KEY,
@@ -55,13 +47,13 @@ class DatabaseManagement {
     );
   }
 
-  protected pool() {
+  protected pool(): pg.Pool {
     return new pg.Pool({
       connectionString: DATABASE_URL,
     });
   }
 
-  protected async poolEnd(pool: pg.Pool) {
+  protected async poolEnd(pool: pg.Pool): Promise<void> {
     await pool.end();
   }
 

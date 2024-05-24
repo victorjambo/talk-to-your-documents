@@ -2,19 +2,11 @@ import { TextLoader } from "langchain/document_loaders/fs/text";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { Document } from "@langchain/core/documents";
-import { DirectoryLoader } from "langchain/document_loaders/fs/directory";
 
-export enum SupportedFileTypes {
-  txt = "text/plain",
-  pdf = "application/pdf",
-  docx = "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-}
-
-type TBlob = { fieType: string; blob: Blob };
-type TDocument = Document<Record<string, any>>;
+import { SupportedFileTypes } from "./supported_file_types";
 
 class DocumentLoaders {
-  private blobs: TBlob[];
+  private blobs: { fieType: string; blob: Blob }[];
 
   constructor(files: Express.Multer.File[]) {
     this.blobs = files.map((file) => ({
@@ -23,7 +15,7 @@ class DocumentLoaders {
     }));
   }
 
-  public async load(): Promise<TDocument[]> {
+  public async load(): Promise<Document<Record<string, any>>[]> {
     return Promise.all(
       this.blobs.map(async ({ fieType, blob }) => {
         switch (fieType) {

@@ -3,7 +3,7 @@ import multer from "multer";
 
 import DocumentsController from "../controllers/documents.controller";
 import ChatsController from "../controllers/chats.controller";
-import { IDocumentCreateRequest, IDocumentUpdateRequest } from "src/types";
+import type { IDocumentCreateRequest, IDocumentUpdateRequest } from "../types";
 
 const documentsRouter = (): Router => {
   const documentsController = new DocumentsController();

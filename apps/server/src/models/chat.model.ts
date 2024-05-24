@@ -1,6 +1,7 @@
 import { PrismaClient, Chat } from ".prisma";
+import type { IChatModel } from "../types";
 
-class ChatModel {
+class ChatModel implements IChatModel {
   protected prisma: PrismaClient;
 
   constructor() {

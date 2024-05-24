@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 
 import ChatModel from "../models/chat.model";
-import { IGetChatRequest, ICreateChatRequest } from "../types";
+import type {
+  IGetChatRequest,
+  ICreateChatRequest,
+  IChatsController,
+} from "../types";
 
-class ChatsController {
+class ChatsController implements IChatsController {
   public async getChat(req: IGetChatRequest, res: Response): Promise<void> {
     try {
       const chatId = req.params.chatId;
