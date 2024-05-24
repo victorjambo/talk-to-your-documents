@@ -1,71 +1,72 @@
 import React from "react";
-import {
-  UserCircleIcon,
-  CalendarDaysIcon,
-  CreditCardIcon,
-} from "@heroicons/react/24/outline";
+import { PaperClipIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+
+import Divider from "./divider";
 
 const Files: React.FC = () => {
   return (
     <div className="">
-      <h2 className="sr-only">Summary</h2>
       <div className="rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
-        <dl className="flex flex-wrap">
-          <div className="flex-auto pl-6 pt-6">
-            <dt className="text-sm font-semibold leading-6 text-gray-900">
-              Amount
-            </dt>
-            <dd className="mt-1 text-base font-semibold leading-6 text-gray-900">
-              $10,560.00
-            </dd>
-          </div>
-          <div className="flex-none self-end px-6 pt-4">
-            <dt className="sr-only">Status</dt>
-            <dd className="rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
-              Paid
-            </dd>
-          </div>
-          <div className="mt-6 flex w-full flex-none gap-x-4 border-t border-gray-900/5 px-6 pt-6">
-            <dt className="flex-none">
-              <span className="sr-only">Client</span>
-              <UserCircleIcon
-                className="h-6 w-5 text-gray-400"
+        <div className="flex-auto pl-6 pt-6">
+          <span className="mt-1 text-base font-semibold leading-6 text-gray-900">
+            Files
+          </span>
+        </div>
+        <Divider classNames="pt-6" />
+
+        <ul role="list" className="divide-y divide-gray-100">
+          <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+            <div className="flex w-0 flex-1 items-center">
+              <PaperClipIcon
+                className="h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-            </dt>
-            <dd className="text-sm font-medium leading-6 text-gray-900">
-              Alex Curren
-            </dd>
-          </div>
-          <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
-            <dt className="flex-none">
-              <span className="sr-only">Due date</span>
-              <CalendarDaysIcon
-                className="h-6 w-5 text-gray-400"
+              <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                <span className="truncate font-medium">
+                  resume_back_end_developer.pdf
+                </span>
+                <span className="flex-shrink-0 text-gray-400">2.4mb</span>
+              </div>
+            </div>
+            <div className="ml-4 flex-shrink-0">
+              <a
+                href="#"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Preview
+              </a>
+            </div>
+          </li>
+          <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+            <div className="flex w-0 flex-1 items-center">
+              <PaperClipIcon
+                className="h-5 w-5 flex-shrink-0 text-gray-400"
                 aria-hidden="true"
               />
-            </dt>
-            <dd className="text-sm leading-6 text-gray-500">
-              <time dateTime="2023-01-31">January 31, 2023</time>
-            </dd>
-          </div>
-          <div className="mt-4 flex w-full flex-none gap-x-4 px-6">
-            <dt className="flex-none">
-              <span className="sr-only">Status</span>
-              <CreditCardIcon
-                className="h-6 w-5 text-gray-400"
-                aria-hidden="true"
-              />
-            </dt>
-            <dd className="text-sm leading-6 text-gray-500">
-              Paid with MasterCard
-            </dd>
-          </div>
-        </dl>
-        <div className="mt-6 border-t border-gray-900/5 px-6 py-6">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Download receipt <span aria-hidden="true">&rarr;</span>
-          </a>
+              <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                <span className="truncate font-medium">
+                  cover_letter_back_end_developer.pdf
+                </span>
+                <span className="flex-shrink-0 text-gray-400">4.5mb</span>
+              </div>
+            </div>
+            <div className="ml-4 flex-shrink-0">
+              <a
+                href="#"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Preview
+              </a>
+            </div>
+          </li>
+        </ul>
+
+        <Divider />
+        <div className="px-6 py-6">
+          <button className="flex items-center space-x-2 text-sm font-semibold leading-6 text-gray-900">
+            <span>Upload more files</span>
+            <ArrowUpTrayIcon className="w-3.5 h-3.5" />
+          </button>
         </div>
       </div>
     </div>
