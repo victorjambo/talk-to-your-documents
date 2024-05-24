@@ -2,7 +2,7 @@ import { Response } from "express";
 
 import ConversationsModel from "../models/conversations.model";
 import type { IConversationsQueryRequest, IGetConversationsRequest } from "../types";
-import DocumentsModel from "src/models/documents.model";
+import DocumentsModel from "../models/documents.model";
 
 class ConversationsController {
   public async getConversations(
@@ -54,7 +54,8 @@ class ConversationsController {
         chatId
       );
 
-      const message = await documentModel.chatWithHistory(
+      const conversationsModel = new ConversationsModel();
+      const message = await conversationsModel.chatWithHistory(
         query,
         searchResults.map((doc) => doc.pageContent),
         chatId
