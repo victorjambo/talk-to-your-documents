@@ -1,6 +1,6 @@
 export * from "./IDocumentCreateRequest";
 export * from "./IDocumentUpdateRequest";
-export * from "./IDocumentQueryRequest";
+export * from "./IConversationsQueryRequest";
 export * from "./IGetChatRequest";
 export * from "./ICreateChatRequest";
 export * from "./IChatModel";

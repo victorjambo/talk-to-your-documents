@@ -4,13 +4,13 @@ import multer from "multer";
 import DocumentsController from "../controllers/documents.controller";
 import ChatsController from "../controllers/chats.controller";
 import type { IDocumentCreateRequest, IDocumentUpdateRequest } from "../types";
+import ConversationsController from "../controllers/conversations.controller";
 
 const documentsRouter = (): Router => {
   const documentsController = new DocumentsController();
   const router = Router();
   const upload = multer();
 
-  router.post("/", documentsController.queryDocuments); // search with query
   router.put(
     "/:chatId",
     upload.array("documents", 12),
@@ -38,9 +38,20 @@ const chatsRouter = (): Router => {
   return router;
 };
 
+const conversationsRouter = (): Router => {
+  const conversationsController = new ConversationsController();
+  const router = Router();
+
+  router.get("/", conversationsController.getConversations);
+  router.post("/", conversationsController.query); // search with query
+
+  return router;
+};
+
 const router: Router = Router();
 
 router.use("/documents", documentsRouter());
 router.use("/chats", chatsRouter());
+router.use("/conversations", conversationsRouter());
 
 export default router;

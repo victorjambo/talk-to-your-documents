@@ -1,7 +1,8 @@
 import { Response } from "express";
 
 import ConversationsModel from "../models/conversations.model";
-import type { IGetConversationsRequest } from "../types";
+import type { IConversationsQueryRequest, IGetConversationsRequest } from "../types";
+import DocumentsModel from "src/models/documents.model";
 
 class ConversationsController {
   public async getConversations(
@@ -26,6 +27,42 @@ class ConversationsController {
         "🚀 ~ ConversationsController ~ getConversations ~ err:",
         err
       );
+      res.status(500).json({
+        error: err,
+      });
+    }
+  }
+
+  public async query(
+    req: IConversationsQueryRequest,
+    res: Response
+  ): Promise<void> {
+    try {
+      const query = req.body.query;
+      const chatId = req.body.chatId;
+      if (!query || !chatId) {
+        res.status(400).json({
+          error: "Query and chatId parameters are required",
+        });
+        return;
+      }
+
+      const documentModel = new DocumentsModel();
+
+      const searchResults = await documentModel.getSimilarDocumentsFromStore(
+        query,
+        chatId
+      );
+
+      const message = await documentModel.chatWithHistory(
+        query,
+        searchResults.map((doc) => doc.pageContent),
+        chatId
+      );
+
+      res.status(200).json({ message });
+    } catch (err) {
+      console.log("🚀 ~ ConversationsController ~ query ~ err:", err);
       res.status(500).json({
         error: err,
       });

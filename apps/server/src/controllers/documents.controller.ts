@@ -6,49 +6,12 @@ import DocumentLoaders from "../helpers/document_loaders";
 import DocumentManagement from "../helpers/document_management";
 import ChatModal from "../models/chat.model";
 import type {
-  IDocumentQueryRequest,
   IDocumentCreateRequest,
   IDocumentUpdateRequest,
   IDocumentsController,
 } from "../types";
 
 class DocumentsController implements IDocumentsController {
-  public async queryDocuments(
-    req: IDocumentQueryRequest,
-    res: Response
-  ): Promise<void> {
-    try {
-      const query = req.body.query;
-      const chatId = req.body.chatId;
-      if (!query || !chatId) {
-        res.status(400).json({
-          error: "Query and chatId parameters are required",
-        });
-        return;
-      }
-
-      const model = new DocumentsModel();
-
-      const searchResults = await model.getSimilarDocumentsFromStore(
-        query,
-        chatId
-      );
-
-      const message = await model.chatWithHistory(
-        query,
-        searchResults.map((doc) => doc.pageContent),
-        chatId
-      );
-
-      res.status(200).json({ message });
-    } catch (err) {
-      console.log("🚀 ~ DocumentsController ~ queryDocuments ~ err:", err);
-      res.status(500).json({
-        error: err,
-      });
-    }
-  }
-
   public async createDocument(
     req: IDocumentCreateRequest,
     res: Response
