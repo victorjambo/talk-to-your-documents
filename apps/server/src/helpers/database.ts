@@ -25,7 +25,7 @@ class DatabaseManagement {
   constructor(tableName: string, historyTableName?: string) {
     this.db = new PrismaClient();
     this.tableName = tableName;
-    this.historyTableName = historyTableName ?? "chat_history";
+    this.historyTableName = historyTableName ?? "conversations";
   }
 
   protected createStore(): TDocumentStore {

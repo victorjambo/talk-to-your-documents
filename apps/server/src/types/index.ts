@@ -7,3 +7,5 @@ export * from "./IChatModel";
 export * from "./TDocumentStore";
 export * from "./IChatsController";
 export * from "./IDocumentsController";
+export * from "./IConversationsModel";
+export * from "./IGetConversationsRequest";

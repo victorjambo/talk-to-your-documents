@@ -10,7 +10,7 @@ import DatabaseManagement from "../helpers/database";
 class DocumentsModel extends DatabaseManagement {
   private static tableName = "Document";
 
-  private static historyTableName = "chat_history";
+  private static historyTableName = "conversations";
 
   constructor() {
     super(DocumentsModel.tableName, DocumentsModel.historyTableName);

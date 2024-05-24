@@ -30,7 +30,7 @@ model Chat {
   documents Document[]
 }
 
-model chat_history {
+model conversations {
   id         Int    @id @default(autoincrement())
   session_id String
   message    Json
