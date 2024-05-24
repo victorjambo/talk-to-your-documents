@@ -1,7 +1,6 @@
 import React from "react";
 import moment from "moment";
-
-import Jazzicon from "./avatar";
+import { UserCircleIcon } from "@heroicons/react/24/outline";
 
 interface Props {
   chat: {
@@ -16,7 +15,7 @@ const Chat: React.FC<Props> = ({ chat }) => {
   return (
     <div className="flex items-center p-4 hover:bg-slate-100">
       <div className="mr-3">
-        <Jazzicon size={35} username={chat.username} />
+        <UserCircleIcon className="w-8 h-8 text-slate-400" />
       </div>
       <div className="flex flex-col">
         <div className="flex items-end">
