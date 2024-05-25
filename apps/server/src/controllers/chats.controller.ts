@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 
 import ChatModel from "../models/chat.model";
 import type {
   IGetChatRequest,
   ICreateChatRequest,
   IChatsController,
+  IGetChatsRequest,
 } from "../types";
 
 class ChatsController implements IChatsController {
@@ -55,10 +56,12 @@ class ChatsController implements IChatsController {
     }
   }
 
-  public async getChats(req: Request, res: Response): Promise<void> {
+  public async getChats(req: IGetChatsRequest, res: Response): Promise<void> {
     try {
+      const includeConversations = Boolean(req.query.conversations);
+
       const chatModel = new ChatModel();
-      const chats = await chatModel.getChats();
+      const chats = await chatModel.getChats(includeConversations);
 
       res.status(200).json({ chats });
     } catch (err) {

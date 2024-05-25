@@ -1,5 +1,4 @@
 import { Response } from "express";
-import { JsonObject } from "@prisma/client/runtime/library";
 
 import ConversationsModel from "../models/conversations.model";
 import type { IConversationsQueryRequest, IGetConversationsRequest } from "../types";
