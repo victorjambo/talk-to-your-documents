@@ -6,20 +6,10 @@ import DesktopSidebar from "./sidebar/desktop";
 import MobileNavbar from "./sidebar/navbar";
 import Files from "./files";
 import MainChats from "./mainChats";
-import { useQuery } from "@tanstack/react-query";
-import { fetchChats } from "../queries";
-
-const chats = [
-  { id: 1, name: "Heroicons", href: "#", initial: "H", current: false },
-  { id: 2, name: "Tailwind Labs", href: "#", initial: "T", current: false },
-  { id: 3, name: "Presidents", href: "#", initial: "P", current: false },
-];
+import { useAppData } from "../hooks/appData";
 
 export default function Dashboard() {
-  const { isPending, error, data } = useQuery({
-    queryKey: ["chats"],
-    queryFn: fetchChats,
-  });
+  const { chats } = useAppData();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const chatTitle = "Conversations";
@@ -29,11 +19,11 @@ export default function Dashboard() {
       {/* Sidebar */}
       <Fragment>
         <MobileSidebar
-          chats={data ?? []}
+          chats={chats}
           sidebarOpen={sidebarOpen}
           setSidebarOpen={setSidebarOpen}
         />
-        <DesktopSidebar chats={data ?? []} />
+        <DesktopSidebar chats={chats} />
         <MobileNavbar chatTitle={chatTitle} setSidebarOpen={setSidebarOpen} />
       </Fragment>
 
