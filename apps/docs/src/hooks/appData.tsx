@@ -11,8 +11,8 @@ export const initialAppData: IAppData = {
   setFiles: () => {},
   chatId: "",
   setChatId: () => {},
-  isPendingChats: false,
-  errorChats: null,
+  isPendingFetchChats: false,
+  errorFetchChats: null,
   isPendingFetchConversations: false,
   errorFetchConversations: null,
   setConversations: () => {},
@@ -28,8 +28,8 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
   const [conversations, setConversations] = useState<IConversation[]>([]);
 
   const {
-    isPending: isPendingChats,
-    error: errorChats,
+    isPending: isPendingFetchChats,
+    error: errorFetchChats,
     data: chats,
   } = useQuery({
     queryKey: ["chats"],
@@ -62,8 +62,8 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
         ...initialAppData,
         chats: chats ?? [],
         conversations,
-        isPendingChats,
-        errorChats,
+        isPendingFetchChats,
+        errorFetchChats,
         chatId,
         setChatId,
         files,

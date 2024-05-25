@@ -9,8 +9,8 @@ export interface IAppData {
   setFiles: Dispatch<SetStateAction<string[]>>;
   chatId: string;
   setChatId: Dispatch<SetStateAction<string>>;
-  isPendingChats: boolean;
-  errorChats: Error | null;
+  isPendingFetchChats: boolean;
+  errorFetchChats: Error | null;
   isPendingFetchConversations: boolean;
   errorFetchConversations: Error | null;
   setConversations: Dispatch<SetStateAction<IConversation[]>>;
