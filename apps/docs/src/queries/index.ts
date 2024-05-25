@@ -28,9 +28,26 @@ export const fetchChats = async (): Promise<INavbarChats[]> => {
   return response.data;
 };
 
-export const fetchChat = async (
-  chatId: string
-): Promise<{ chat: IChats }> => {
+export const fetchChat = async (chatId: string): Promise<{ chat: IChats }> => {
   const response = await instance.get(`/chats/${chatId}`);
+  return response.data;
+};
+
+export const createChat = async (chat: {
+  chatName: string;
+}): Promise<{ chat: IChats }> => {
+  console.log(chat);
+
+  const response = await instance.post("/chats", chat);
+  return response.data;
+};
+
+export const createConversations = async (conversations: {
+  query: string;
+  chatId: string;
+}): Promise<{
+  message: string;
+}> => {
+  const response = await instance.post("/conversations", conversations);
   return response.data;
 };
