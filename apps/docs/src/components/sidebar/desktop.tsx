@@ -1,13 +1,22 @@
 import React from "react";
+import { PencilSquareIcon } from "@heroicons/react/24/outline";
+
 import { classNames } from "../../utils/classNames";
-import { IChats, INavbarChats } from "../../types";
-import Link from "next/link";
+import { INavbarChats } from "../../types";
+import { useAppData } from "../../hooks/appData";
 
 interface Props {
   chats: INavbarChats[];
 }
 
 const DesktopSidebar: React.FC<Props> = ({ chats }) => {
+  const { setChatId } = useAppData();
+
+  const handleNewChat = () => {
+    // handle new chat
+    // Open up pop up modal
+  };
+
   return (
     <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
       {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -20,20 +29,23 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
             <li>
-              <div className="text-xs font-semibold leading-6 text-gray-400">
-                Chats
+              <div className="text-xs font-semibold leading-6 text-gray-400 flex justify-between items-center">
+                <span>Chats</span>
+                <button onClick={handleNewChat}>
+                  <PencilSquareIcon className="w-3.5 h-3.5 ml-1" />
+                </button>
               </div>
               <ul role="list" className="-mx-2 mt-2 space-y-1">
                 {chats.map((chat) => (
                   <li key={chat.title}>
-                    <Link
-                      href={chat.href}
+                    <button
                       className={classNames(
                         chat.current
                           ? "bg-gray-50 text-indigo-600"
                           : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                        "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                        "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full"
                       )}
+                      onClick={() => setChatId(chat.id)}
                     >
                       <span
                         className={classNames(
@@ -46,7 +58,7 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
                         {chat.initial}
                       </span>
                       <span className="truncate">{chat.title}</span>
-                    </Link>
+                    </button>
                   </li>
                 ))}
               </ul>

@@ -27,3 +27,10 @@ export const fetchChats = async (): Promise<INavbarChats[]> => {
   }
   return response.data;
 };
+
+export const fetchChat = async (
+  chatId: string
+): Promise<{ chat: IChats }> => {
+  const response = await instance.get(`/chats/${chatId}`);
+  return response.data;
+};

@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 import ChatBubble from "./ChatBubble";
-import { fetchConversations } from "../queries";
+import { fetchChat, fetchConversations } from "../queries";
 import { IConversation } from "../types";
+import { useAppData } from "../hooks/appData";
 
 const ChatBubbles: React.FC = () => {
+  const { chatId, setFiles } = useAppData();
+
   const { isPending, error, data } = useQuery({
-    queryKey: ["conversations"],
-    queryFn: () => fetchConversations("clwl5m42n0000m8b7srj3mxth"),
+    queryKey: ["conversations", chatId],
+    queryFn: async () => {
+      const chat = await fetchChat(chatId);
+
+      setFiles(chat.chat.fileNames ?? null);
+
+      return fetchConversations(chatId);
+    },
+    enabled: !!chatId,
   });
+
+  if (!chatId) return <div>Select a chat to view messages</div>;
 
   if (isPending) return <div>Loading...</div>;
 

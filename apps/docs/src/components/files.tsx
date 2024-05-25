@@ -2,8 +2,11 @@ import React from "react";
 import { PaperClipIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
 
 import Divider from "./divider";
+import { useAppData } from "../hooks/appData";
 
 const Files: React.FC = () => {
+  const { files } = useAppData();
+
   return (
     <div className="">
       <div className="rounded-lg bg-white shadow-sm ring-1 ring-gray-900/5">
@@ -15,50 +18,31 @@ const Files: React.FC = () => {
         <Divider classNames="pt-6" />
 
         <ul role="list" className="divide-y divide-gray-100">
-          <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-            <div className="flex w-0 flex-1 items-center">
-              <PaperClipIcon
-                className="h-5 w-5 flex-shrink-0 text-gray-400"
-                aria-hidden="true"
-              />
-              <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                <span className="truncate font-medium">
-                  resume_back_end_developer.pdf
-                </span>
-                <span className="flex-shrink-0 text-gray-400">2.4mb</span>
+          {files.map((file: string) => (
+            <li
+              key={file}
+              className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6"
+            >
+              <div className="flex w-0 flex-1 items-center">
+                <PaperClipIcon
+                  className="h-5 w-5 flex-shrink-0 text-gray-400"
+                  aria-hidden="true"
+                />
+                <div className="ml-4 flex min-w-0 flex-1 gap-2">
+                  <span className="truncate font-medium">{file}</span>
+                  <span className="flex-shrink-0 text-gray-400 hidden">2.4mb</span>
+                </div>
               </div>
-            </div>
-            <div className="ml-4 flex-shrink-0">
-              <a
-                href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                Preview
-              </a>
-            </div>
-          </li>
-          <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-            <div className="flex w-0 flex-1 items-center">
-              <PaperClipIcon
-                className="h-5 w-5 flex-shrink-0 text-gray-400"
-                aria-hidden="true"
-              />
-              <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                <span className="truncate font-medium">
-                  cover_letter_back_end_developer.pdf
-                </span>
-                <span className="flex-shrink-0 text-gray-400">4.5mb</span>
+              <div className="ml-4 flex-shrink-0">
+                <button
+                  disabled
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  Preview
+                </button>
               </div>
-            </div>
-            <div className="ml-4 flex-shrink-0">
-              <a
-                href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                Preview
-              </a>
-            </div>
-          </li>
+            </li>
+          ))}
         </ul>
 
         <Divider />

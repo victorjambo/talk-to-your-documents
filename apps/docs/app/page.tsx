@@ -8,10 +8,10 @@ const queryClient = new QueryClient();
 
 export default function Page(): JSX.Element {
   return (
-    <AppDataProvider>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <AppDataProvider>
         <Dashboard />
-      </QueryClientProvider>
-    </AppDataProvider>
+      </AppDataProvider>
+    </QueryClientProvider>
   );
 }
