@@ -4,103 +4,29 @@ import ChatBubble from "./ChatBubble";
 const messages = [
   {
     id: 1,
-    message: "Hello, how can I help you today?",
-    sender: "AI",
+    message: "when did raila go to school",
+    chatId: "clwl5m42n0000m8b7srj3mxth",
+    sender: "human",
   },
   {
     id: 2,
-    message: "I have a question about my order",
-    sender: "You",
+    message:
+      "Raila Odinga attended school in East Germany, where he earned a master's degree in mechanical engineering in 1970.",
+    chatId: "clwl5m42n0000m8b7srj3mxth",
+    sender: "ai",
   },
   {
     id: 3,
-    message: "Sure, what would you like to know?",
-    sender: "AI",
+    message: "How old is raila",
+    chatId: "clwl5m42n0000m8b7srj3mxth",
+    sender: "human",
   },
   {
     id: 4,
-    message: "When will my order arrive?",
-    sender: "You",
-  },
-  {
-    id: 5,
-    message: "Your order will arrive in 3-5 business days",
-    sender: "AI",
-  },
-  {
-    id: 1,
-    message: "Hello, how can I help you today?",
-    sender: "AI",
-  },
-  {
-    id: 2,
-    message: "I have a question about my order",
-    sender: "You",
-  },
-  {
-    id: 3,
-    message: "Sure, what would you like to know?",
-    sender: "AI",
-  },
-  {
-    id: 4,
-    message: "When will my order arrive?",
-    sender: "You",
-  },
-  {
-    id: 5,
-    message: "Your order will arrive in 3-5 business days",
-    sender: "AI",
-  },
-  {
-    id: 1,
-    message: "Hello, how can I help you today?",
-    sender: "AI",
-  },
-  {
-    id: 2,
-    message: "I have a question about my order",
-    sender: "You",
-  },
-  {
-    id: 3,
-    message: "Sure, what would you like to know?",
-    sender: "AI",
-  },
-  {
-    id: 4,
-    message: "When will my order arrive?",
-    sender: "You",
-  },
-  {
-    id: 5,
-    message: "Your order will arrive in 3-5 business days",
-    sender: "AI",
-  },
-  {
-    id: 1,
-    message: "Hello, how can I help you today?",
-    sender: "AI",
-  },
-  {
-    id: 2,
-    message: "I have a question about my order",
-    sender: "You",
-  },
-  {
-    id: 3,
-    message: "Sure, what would you like to know?",
-    sender: "AI",
-  },
-  {
-    id: 4,
-    message: "When will my order arrive?",
-    sender: "You",
-  },
-  {
-    id: 5,
-    message: "Your order will arrive in 3-5 business days",
-    sender: "AI",
+    message:
+      "Raila Odinga was born on January 7, 1945, so as of now, he is 77 years old.",
+    chatId: "clwl5m42n0000m8b7srj3mxth",
+    sender: "ai",
   },
 ];
 

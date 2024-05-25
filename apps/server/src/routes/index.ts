@@ -42,8 +42,8 @@ const conversationsRouter = (): Router => {
   const conversationsController = new ConversationsController();
   const router = Router();
 
-  router.get("/", conversationsController.getConversations);
   router.post("/", conversationsController.query); // search with query
+  router.get("/:chatId", conversationsController.getConversations);
 
   return router;
 };

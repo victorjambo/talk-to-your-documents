@@ -9,3 +9,4 @@ export * from "./IChatsController";
 export * from "./IDocumentsController";
 export * from "./IConversationsModel";
 export * from "./IGetConversationsRequest";
+export * from "./IConversation";

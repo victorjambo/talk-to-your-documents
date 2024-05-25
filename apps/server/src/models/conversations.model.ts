@@ -4,9 +4,10 @@ import {
   MessagesPlaceholder,
 } from "@langchain/core/prompts";
 import { ChatOpenAI } from "@langchain/openai";
+import { JsonObject } from "@prisma/client/runtime/library";
 
 import { PrismaClient, conversations } from ".prisma";
-import type { IConversationsModel } from "../types";
+import type { IConversation, IConversationsModel } from "../types";
 import DatabaseManagement from "../helpers/database";
 
 class ConversationsModel implements IConversationsModel {
@@ -16,8 +17,27 @@ class ConversationsModel implements IConversationsModel {
     this.prisma = new PrismaClient();
   }
 
-  public async getConversations(chatId: string): Promise<conversations[]> {
-    return this.prisma.conversations.findMany({
+  public async getConversations(chatId: string): Promise<IConversation[]> {
+    const prisma = new PrismaClient().$extends({
+      result: {
+        conversations: {
+          sender: {
+            needs: { message: true },
+            compute(conversations) {
+              return (conversations.message as JsonObject).type as string;
+            },
+          },
+          message: {
+            needs: { message: true },
+            compute(conversations) {
+              return (conversations.message as JsonObject).content as string;
+            },
+          },
+        },
+      },
+    });
+
+    return prisma.conversations.findMany({
       where: { session_id: chatId },
     });
   }

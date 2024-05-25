@@ -2,7 +2,6 @@ import React from "react";
 
 import Divider from "./divider";
 import ChatBubbles from "./ChatBubbles";
-import TextArea from "./textarea";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 
 const MainChats: React.FC = () => {

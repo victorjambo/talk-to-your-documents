@@ -1,5 +1,5 @@
-import { conversations } from ".prisma";
+import { IConversation } from "./IConversation";
 
 export interface IConversationsModel {
-  getConversations(chatId: string): Promise<conversations[]>;
+  getConversations(chatId: string): Promise<IConversation[]>;
 }
