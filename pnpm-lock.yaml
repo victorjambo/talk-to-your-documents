@@ -35,6 +35,9 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.37.1
         version: 5.37.1(react@18.2.0)
+      axios:
+        specifier: ^1.7.2
+        version: 1.7.2
       next:
         specifier: ^14.1.1
         version: 14.1.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -107,7 +110,7 @@ importers:
         version: 7.1.0
       langchain:
         specifier: ^0.1.37
-        version: 0.1.37(handlebars@4.7.8)(ignore@5.3.1)(lodash@4.17.21)(openai@4.44.0)(pdf-parse@1.1.1)(pg@8.11.5)
+        version: 0.1.37(axios@1.7.2)(handlebars@4.7.8)(ignore@5.3.1)(lodash@4.17.21)(openai@4.44.0)(pdf-parse@1.1.1)(pg@8.11.5)
       multer:
         specifier: 1.4.5-lts.1
         version: 1.4.5-lts.1
@@ -1701,6 +1704,9 @@ packages:
     resolution: {integrity: sha512-M0JtH+hlOL5pLQwHOLNYZaXuhqmvS8oExsqB1SBYgA4Dk7u/xx+YdGHXaK5pyUfed5mYXdlYiphWq3G8cRi5JQ==}
     engines: {node: '>=4'}
 
+  axios@1.7.2:
+    resolution: {integrity: sha512-2A8QhOMrbomlDuiLeK9XibIBzuHeRcqqNOHp0Cyp5EoJ1IFDh+XZH3A6BkXtv0K4gFGCI0Y4BM7B1wOEi0Rmgw==}
+
   axobject-query@3.2.1:
     resolution: {integrity: sha512-jsyHu61e6N4Vbz/v18DHwWYKK0bSWLqn47eeDSKPB7m8tqMHF9YJ+mhIk2lVteyZrY8tnSj/jHOv4YiTCuCJgg==}
 
@@ -2435,6 +2441,15 @@ packages:
 
   flatted@3.2.7:
     resolution: {integrity: sha512-5nqDSxl8nn5BSNxyR3n4I6eDmbolI6WT+QqR547RwxQapgjQBmtktdP+HTBb/a/zLsbzERTONyUB5pefh5TtjQ==}
+
+  follow-redirects@1.15.6:
+    resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
 
   for-each@0.3.3:
     resolution: {integrity: sha512-jqYfLp7mo9vIyQf8ykW2v7A+2N4QjeCeI5+Dz9XraiO1ign81wjiH7Fb9vSOWvQfNtmSa4H2RoQTrrXivdUZmw==}
@@ -5828,6 +5843,14 @@ snapshots:
 
   axe-core@4.7.0: {}
 
+  axios@1.7.2:
+    dependencies:
+      follow-redirects: 1.15.6
+      form-data: 4.0.0
+      proxy-from-env: 1.1.0
+    transitivePeerDependencies:
+      - debug
+
   axobject-query@3.2.1:
     dependencies:
       dequal: 2.0.3
@@ -6780,6 +6803,8 @@ snapshots:
 
   flatted@3.2.7: {}
 
+  follow-redirects@1.15.6: {}
+
   for-each@0.3.3:
     dependencies:
       is-callable: 1.2.7
@@ -7303,7 +7328,7 @@ snapshots:
       object.assign: 4.1.4
       object.values: 1.1.7
 
-  langchain@0.1.37(handlebars@4.7.8)(ignore@5.3.1)(lodash@4.17.21)(openai@4.44.0)(pdf-parse@1.1.1)(pg@8.11.5):
+  langchain@0.1.37(axios@1.7.2)(handlebars@4.7.8)(ignore@5.3.1)(lodash@4.17.21)(openai@4.44.0)(pdf-parse@1.1.1)(pg@8.11.5):
     dependencies:
       '@anthropic-ai/sdk': 0.9.1
       '@langchain/community': 0.0.55(lodash@4.17.21)(openai@4.44.0)(pg@8.11.5)
@@ -7324,6 +7349,7 @@ snapshots:
       zod: 3.23.8
       zod-to-json-schema: 3.23.0(zod@3.23.8)
     optionalDependencies:
+      axios: 1.7.2
       handlebars: 4.7.8
       ignore: 5.3.1
       pdf-parse: 1.1.1

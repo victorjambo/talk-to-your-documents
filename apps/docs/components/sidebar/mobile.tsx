@@ -9,17 +9,12 @@ import {
 import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { classNames } from "../../utils/classNames";
+import { INavbarChats } from "../../types";
 
 interface Props {
   sidebarOpen: boolean;
   setSidebarOpen: Dispatch<SetStateAction<boolean>>;
-  chats: {
-    id: number;
-    name: string;
-    href: string;
-    initial: string;
-    current: boolean;
-  }[];
+  chats: INavbarChats[];
 }
 
 const MobileSidebar: React.FC<Props> = ({
@@ -88,7 +83,7 @@ const MobileSidebar: React.FC<Props> = ({
                       </div>
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
                         {chats.map((chat) => (
-                          <li key={chat.name}>
+                          <li key={chat.title}>
                             <a
                               href={chat.href}
                               className={classNames(
@@ -108,7 +103,7 @@ const MobileSidebar: React.FC<Props> = ({
                               >
                                 {chat.initial}
                               </span>
-                              <span className="truncate">{chat.name}</span>
+                              <span className="truncate">{chat.title}</span>
                             </a>
                           </li>
                         ))}

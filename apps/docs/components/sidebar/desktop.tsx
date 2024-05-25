@@ -1,14 +1,10 @@
 import React from "react";
 import { classNames } from "../../utils/classNames";
+import { IChats, INavbarChats } from "../../types";
+import Link from "next/link";
 
 interface Props {
-  chats: {
-    id: number;
-    name: string;
-    href: string;
-    initial: string;
-    current: boolean;
-  }[];
+  chats: INavbarChats[];
 }
 
 const DesktopSidebar: React.FC<Props> = ({ chats }) => {
@@ -29,8 +25,8 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
               </div>
               <ul role="list" className="-mx-2 mt-2 space-y-1">
                 {chats.map((chat) => (
-                  <li key={chat.name}>
-                    <a
+                  <li key={chat.title}>
+                    <Link
                       href={chat.href}
                       className={classNames(
                         chat.current
@@ -49,8 +45,8 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
                       >
                         {chat.initial}
                       </span>
-                      <span className="truncate">{chat.name}</span>
-                    </a>
+                      <span className="truncate">{chat.title}</span>
+                    </Link>
                   </li>
                 ))}
               </ul>

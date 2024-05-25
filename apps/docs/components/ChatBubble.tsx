@@ -1,11 +1,8 @@
 import React from "react";
+import { IConversation } from "../types";
 
 interface Props {
-  chat: {
-    id: number;
-    message: string;
-    sender: string;
-  };
+  chat: IConversation;
 }
 
 const ChatBubble: React.FC<Props> = ({ chat }) => {

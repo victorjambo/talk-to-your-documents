@@ -1,41 +1,26 @@
 import React from "react";
-import ChatBubble from "./ChatBubble";
+import { useQuery } from "@tanstack/react-query";
 
-const messages = [
-  {
-    id: 1,
-    message: "when did raila go to school",
-    chatId: "clwl5m42n0000m8b7srj3mxth",
-    sender: "human",
-  },
-  {
-    id: 2,
-    message:
-      "Raila Odinga attended school in East Germany, where he earned a master's degree in mechanical engineering in 1970.",
-    chatId: "clwl5m42n0000m8b7srj3mxth",
-    sender: "ai",
-  },
-  {
-    id: 3,
-    message: "How old is raila",
-    chatId: "clwl5m42n0000m8b7srj3mxth",
-    sender: "human",
-  },
-  {
-    id: 4,
-    message:
-      "Raila Odinga was born on January 7, 1945, so as of now, he is 77 years old.",
-    chatId: "clwl5m42n0000m8b7srj3mxth",
-    sender: "ai",
-  },
-];
+import ChatBubble from "./ChatBubble";
+import { fetchConversations } from "../queries";
+import { IConversation } from "../types";
 
 const ChatBubbles: React.FC = () => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ["conversations"],
+    queryFn: () => fetchConversations("clwl5m42n0000m8b7srj3mxth"),
+  });
+
+  if (isPending) return <div>Loading...</div>;
+
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
     <div className="pt-4 max-h-[600px] overflow-scroll">
-      {messages.map((chat) => (
-        <ChatBubble key={chat.id} chat={chat} />
-      ))}
+      {data?.conversations?.length &&
+        data?.conversations.map((conversation: IConversation) => (
+          <ChatBubble key={conversation.id} chat={conversation} />
+        ))}
     </div>
   );
 };
