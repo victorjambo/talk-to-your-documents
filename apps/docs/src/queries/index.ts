@@ -51,3 +51,30 @@ export const createConversations = async (conversations: {
   const response = await instance.post("/conversations", conversations);
   return response.data;
 };
+
+export const uploadUpdateDocuments = async (
+  data: FormData,
+  chatId: string
+): Promise<{
+  chatId: string;
+}> => {
+  const response = await instance.put(`/documents/${chatId}`, data, {
+    headers: {
+      "Content-type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};
+
+export const uploadDocuments = async (
+  data: FormData
+): Promise<{
+  chatId: string;
+}> => {
+  const response = await instance.post("/documents", data, {
+    headers: {
+      "Content-type": "multipart/form-data",
+    },
+  });
+  return response.data;
+};

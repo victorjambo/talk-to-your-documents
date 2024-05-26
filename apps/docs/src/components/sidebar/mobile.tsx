@@ -10,6 +10,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 
 import { classNames } from "../../utils/classNames";
 import { INavbarChats } from "../../types";
+import { useAppData } from "../../hooks/appData";
 
 interface Props {
   sidebarOpen: boolean;
@@ -22,6 +23,8 @@ const MobileSidebar: React.FC<Props> = ({
   sidebarOpen,
   setSidebarOpen,
 }) => {
+  const { chatId, setChatId } = useAppData();
+
   return (
     <Transition show={sidebarOpen}>
       <Dialog className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
@@ -71,9 +74,7 @@ const MobileSidebar: React.FC<Props> = ({
               {/* Sidebar component, swap this element with another sidebar if you like */}
               <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
                 <div className="flex h-16 shrink-0 items-center">
-                  <h1 className="text-lg font-bold text-indigo-600">
-                    talk to your documents
-                  </h1>
+                  <h1 className="text-lg font-bold text-indigo-600">AI</h1>
                 </div>
                 <nav className="flex flex-1 flex-col">
                   <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -84,18 +85,18 @@ const MobileSidebar: React.FC<Props> = ({
                       <ul role="list" className="-mx-2 mt-2 space-y-1">
                         {chats.map((chat) => (
                           <li key={chat.title}>
-                            <a
-                              href={chat.href}
+                            <button
                               className={classNames(
-                                chat.current
+                                chat.id === chatId
                                   ? "bg-gray-50 text-indigo-600"
                                   : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
-                                "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
+                                "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full"
                               )}
+                              onClick={() => setChatId(chat.id)}
                             >
                               <span
                                 className={classNames(
-                                  chat.current
+                                  chat.id === chatId
                                     ? "text-indigo-600 border-indigo-600"
                                     : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
                                   "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white"
@@ -104,7 +105,7 @@ const MobileSidebar: React.FC<Props> = ({
                                 {chat.initial}
                               </span>
                               <span className="truncate">{chat.title}</span>
-                            </a>
+                            </button>
                           </li>
                         ))}
                       </ul>

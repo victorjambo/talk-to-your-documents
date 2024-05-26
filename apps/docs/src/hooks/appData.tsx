@@ -16,6 +16,7 @@ export const initialAppData: IAppData = {
   isPendingFetchConversations: false,
   errorFetchConversations: null,
   setConversations: () => {},
+  chatName: "",
 };
 
 export const AppDataContext = createContext<IAppData>(initialAppData);
@@ -24,6 +25,7 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
   children,
 }) => {
   const [chatId, setChatId] = useState<string>("");
+  const [chatName, setChatName] = useState<string>("");
   const [files, setFiles] = useState<string[]>([]);
   const [conversations, setConversations] = useState<IConversation[]>([]);
 
@@ -56,6 +58,13 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
     setConversations(dataFetchConversations?.conversations ?? []);
   }, [dataFetchConversations?.conversations]);
 
+  useEffect(() => {
+    if (chatId) {
+      const title = chats?.find((chat) => chat.id === chatId)?.title;
+      setChatName(title ?? "");
+    }
+  }, [chatId]);
+
   return (
     <AppDataContext.Provider
       value={{
@@ -70,7 +79,8 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
         setFiles,
         isPendingFetchConversations,
         errorFetchConversations,
-        setConversations
+        setConversations,
+        chatName,
       }}
     >
       {children}

@@ -14,4 +14,5 @@ export interface IAppData {
   isPendingFetchConversations: boolean;
   errorFetchConversations: Error | null;
   setConversations: Dispatch<SetStateAction<IConversation[]>>;
+  chatName: string;
 }

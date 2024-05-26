@@ -1,4 +1,4 @@
-import React, { MutableRefObject, useRef } from "react";
+import React, { useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
 
@@ -36,8 +36,6 @@ const MainChats: React.FC = () => {
       console.log("🚀 ~ Error while querying:", {error, variables, context});
     },
     onSuccess: (data, variables, context) => {
-      console.log("🚀 ~ data:", { data, variables, context });
-      // Boom baby!
       const newConversation = [
         ...conversations,
         {
@@ -62,7 +60,7 @@ const MainChats: React.FC = () => {
 
   return (
     <div className="relative bg-white shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg lg:col-span-2 p-4">
-      <h2 className="text-base font-semibold leading-6 text-gray-900">Chats</h2>
+      <h2 className="font-thin">talk to your documents</h2>
       <Divider classNames="py-4" />
       <ChatBubbles />
       <Divider classNames="py-4" />
@@ -74,7 +72,7 @@ const MainChats: React.FC = () => {
           id="prompt"
           name="prompt"
           className="w-full p-3 rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
-          placeholder="talk to your documents..."
+          placeholder={chatId ? "talk to your documents..." : "Start a conversation..."}
         />
         <div className="absolute right-0 bottom-0 flex justify-between m-4">
           <button

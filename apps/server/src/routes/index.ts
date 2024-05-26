@@ -18,7 +18,7 @@ const documentsRouter = (): Router => {
       documentsController.updateDocument(req as IDocumentUpdateRequest, res)
   ); // Add documents to a chat
   router.post(
-    "/create",
+    "/",
     upload.array("documents", 12),
     (req: Request, res: Response) =>
       documentsController.createDocument(req as IDocumentCreateRequest, res)

@@ -1,8 +1,9 @@
 import React from "react";
-import { PaperClipIcon, ArrowUpTrayIcon } from "@heroicons/react/24/outline";
+import { PaperClipIcon } from "@heroicons/react/24/outline";
 
 import Divider from "./divider";
 import { useAppData } from "../hooks/appData";
+import UploadFiles from "./uploadFiles";
 
 const Files: React.FC = () => {
   const { files } = useAppData();
@@ -16,7 +17,6 @@ const Files: React.FC = () => {
           </span>
         </div>
         <Divider classNames="pt-6" />
-
         <ul role="list" className="divide-y divide-gray-100">
           {files.map((file: string) => (
             <li
@@ -30,7 +30,9 @@ const Files: React.FC = () => {
                 />
                 <div className="ml-4 flex min-w-0 flex-1 gap-2">
                   <span className="truncate font-medium">{file}</span>
-                  <span className="flex-shrink-0 text-gray-400 hidden">2.4mb</span>
+                  <span className="flex-shrink-0 text-gray-400 hidden">
+                    2.4mb
+                  </span>
                 </div>
               </div>
               <div className="ml-4 flex-shrink-0">
@@ -44,13 +46,9 @@ const Files: React.FC = () => {
             </li>
           ))}
         </ul>
-
-        <Divider />
+        <Divider classNames={Boolean(!!files.length) ? "" : "hidden"} />
         <div className="px-6 py-6">
-          <button className="flex items-center space-x-2 text-sm font-semibold leading-6 text-gray-900">
-            <span>Upload more files</span>
-            <ArrowUpTrayIcon className="w-3.5 h-3.5" />
-          </button>
+          <UploadFiles isNewUpload={Boolean(!files.length)} />
         </div>
       </div>
     </div>

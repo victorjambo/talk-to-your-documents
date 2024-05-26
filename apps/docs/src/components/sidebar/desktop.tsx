@@ -10,7 +10,7 @@ interface Props {
 }
 
 const DesktopSidebar: React.FC<Props> = ({ chats }) => {
-  const { setChatId } = useAppData();
+  const { chatId, setChatId } = useAppData();
 
   const handleNewChat = () => {
     // handle new chat
@@ -23,7 +23,7 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
       <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
         <div className="flex h-16 shrink-0 items-center">
           <h1 className="text-xl font-bold text-indigo-600">
-            talk to your documents
+            AI
           </h1>
         </div>
         <nav className="flex flex-1 flex-col">
@@ -40,7 +40,7 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
                   <li key={chat.title}>
                     <button
                       className={classNames(
-                        chat.current
+                        chat.id === chatId
                           ? "bg-gray-50 text-indigo-600"
                           : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
                         "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold w-full"
@@ -49,7 +49,7 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
                     >
                       <span
                         className={classNames(
-                          chat.current
+                          chat.id === chatId
                             ? "text-indigo-600 border-indigo-600"
                             : "text-gray-400 border-gray-200 group-hover:border-indigo-600 group-hover:text-indigo-600",
                           "flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-medium bg-white"

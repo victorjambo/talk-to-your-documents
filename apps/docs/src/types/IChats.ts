@@ -11,5 +11,4 @@ export interface IChats {
 export interface INavbarChats extends IChats {
   href: string;
   initial: string;
-  current: boolean;
 }

@@ -25,12 +25,22 @@ class DocumentsController implements IDocumentsController {
         return;
       }
 
+      let chat: Chat;
       const body = req.body;
-      const title = body.chatName ?? "Untitled Chat";
+      const chatId = body.chatId;
+      const chatModal = new ChatModal();
       const fileNames = files.map((file) => file.originalname);
 
-      const chatModal = new ChatModal();
-      const chat = await chatModal.createChat({ title, fileNames });
+      if (chatId) {
+        chat = await chatModal.getChat(chatId);
+        chatModal.updateChat(chatId, {
+          ...chat,
+          fileNames: [...chat.fileNames, ...fileNames],
+        });
+      } else {
+        const title = body.chatName ?? "Untitled";
+        chat = await chatModal.createChat({ title, fileNames });
+      }
 
       const documentLoader = new DocumentLoaders(files);
       const documents = await documentLoader.load();
