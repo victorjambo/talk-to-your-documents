@@ -10,7 +10,7 @@ import { useAppData } from "../hooks/appData";
 const MainChats: React.FC = () => {
   const formRef = useRef<any>();
 
-  const { chatId, setConversations, conversations } = useAppData();
+  const { chatId, setConversations, conversations, chatName } = useAppData();
 
   const { mutate } = useMutation({
     mutationFn: (query: string) =>
@@ -33,7 +33,7 @@ const MainChats: React.FC = () => {
       return variables;
     },
     onError: (error, variables, context) => {
-      console.log("🚀 ~ Error while querying:", {error, variables, context});
+      console.log("🚀 ~ Error while querying:", { error, variables, context });
     },
     onSuccess: (data, variables, context) => {
       const newConversation = [
@@ -60,7 +60,7 @@ const MainChats: React.FC = () => {
 
   return (
     <div className="relative bg-white shadow-sm ring-1 ring-gray-900/5 sm:mx-0 sm:rounded-lg lg:col-span-2 p-4">
-      <h2 className="font-thin">talk to your documents</h2>
+      <h2 className="font-thin">{chatName || "talk to your documents"}</h2>
       <Divider classNames="py-4" />
       <ChatBubbles />
       <Divider classNames="py-4" />
@@ -72,7 +72,9 @@ const MainChats: React.FC = () => {
           id="prompt"
           name="prompt"
           className="w-full p-3 rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
-          placeholder={chatId ? "talk to your documents..." : "Start a conversation..."}
+          placeholder={
+            chatId ? "talk to your documents..." : "Start a conversation..."
+          }
         />
         <div className="absolute right-0 bottom-0 flex justify-between m-4">
           <button

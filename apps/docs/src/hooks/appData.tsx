@@ -17,6 +17,7 @@ export const initialAppData: IAppData = {
   errorFetchConversations: null,
   setConversations: () => {},
   chatName: "",
+  setChatName: () => {},
   refetchChats: () => {}
 };
 
@@ -83,6 +84,7 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
         errorFetchConversations,
         setConversations,
         chatName,
+        setChatName,
         refetchChats
       }}
     >

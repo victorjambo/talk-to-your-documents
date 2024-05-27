@@ -14,7 +14,7 @@ interface Props {
 }
 
 const DesktopSidebar: React.FC<Props> = ({ chats }) => {
-  const { chatId, setChatId, refetchChats } = useAppData();
+  const { chatId, setChatId, refetchChats, setChatName } = useAppData();
 
   const [selectedChat, setSelectedChat] = useState<INavbarChats | null>(null);
 
@@ -35,8 +35,8 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
   });
 
   const handleNewChat = () => {
-    // handle new chat
-    // Open up pop up modal
+    setChatName("");
+    setChatId("");
   };
 
   const handleInputOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
