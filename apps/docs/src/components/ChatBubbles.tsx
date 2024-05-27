@@ -21,7 +21,7 @@ const ChatBubbles: React.FC = () => {
     return <div>Error: {errorFetchConversations.message}</div>;
 
   return (
-    <div className="pt-4 max-h-[600px] overflow-scroll">
+    <div className="pt-4 max-h-[600px] overflow-scroll flex flex-col-reverse">
       {conversations?.length ? (
         conversations.map((conversation: IConversation) => (
           <ChatBubble key={conversation.id} chat={conversation} />

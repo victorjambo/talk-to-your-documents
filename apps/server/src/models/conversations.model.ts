@@ -22,6 +22,11 @@ class ConversationsModel implements IConversationsModel {
 
     return prisma.conversations.findMany({
       where: { session_id: chatId },
+      orderBy: [
+        {
+          createdAt: "desc",
+        },
+      ],
     });
   }
 
