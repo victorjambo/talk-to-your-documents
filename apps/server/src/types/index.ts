@@ -11,3 +11,4 @@ export * from "./IDocumentsController";
 export * from "./IConversationsModel";
 export * from "./IGetConversationsRequest";
 export * from "./IConversation";
+export * from "./IUpdateChatRequest";

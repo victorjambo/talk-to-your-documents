@@ -55,6 +55,13 @@ class ChatModel implements IChatModel {
       },
     });
   }
+
+  // TODO: cascade delete
+  public async deleteChat(chatId: string): Promise<Chat> {
+    return this.prisma.chat.delete({
+      where: { id: chatId },
+    });
+  }
 }
 
 export default ChatModel;

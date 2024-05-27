@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { QueryClient, useQuery } from "@tanstack/react-query";
 
 import { IAppData, IConversation } from "../types";
 import { fetchChat, fetchChats, fetchConversations } from "../queries";
@@ -17,6 +17,7 @@ export const initialAppData: IAppData = {
   errorFetchConversations: null,
   setConversations: () => {},
   chatName: "",
+  refetchChats: () => {}
 };
 
 export const AppDataContext = createContext<IAppData>(initialAppData);
@@ -33,6 +34,7 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
     isPending: isPendingFetchChats,
     error: errorFetchChats,
     data: chats,
+    refetch: refetchChats,
   } = useQuery({
     queryKey: ["chats"],
     queryFn: fetchChats,
@@ -81,6 +83,7 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
         errorFetchConversations,
         setConversations,
         chatName,
+        refetchChats
       }}
     >
       {children}

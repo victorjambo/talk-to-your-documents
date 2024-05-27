@@ -34,6 +34,8 @@ const chatsRouter = (): Router => {
   router.post("/", documentsController.createChat);
   router.get("/", documentsController.getChats);
   router.get("/:chatId", documentsController.getChat);
+  router.put("/:chatId", documentsController.updateChat);
+  router.delete("/:chatId", documentsController.deleteChat);
 
   return router;
 };

@@ -19,7 +19,7 @@ model Document {
   content String
   vector  Unsupported("vector")?
 
-  chat   Chat?   @relation(fields: [chatId], references: [id])
+  chat   Chat?   @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId String?
 
   createdAt DateTime @default(now())
@@ -41,7 +41,7 @@ model conversations {
   message    Json
   session_id String
 
-  chat Chat? @relation(fields: [session_id], references: [id])
+  chat Chat? @relation(fields: [session_id], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
 }

@@ -78,3 +78,18 @@ export const uploadDocuments = async (
   });
   return response.data;
 };
+
+export const updateChat = async (
+  chatId: string,
+  chat: { chatName?: string; fileNames?: string[] }
+): Promise<IChats | null> => {
+  if (!chatId) return null;
+
+  const response = await instance.put(`/chats/${chatId}`, chat);
+  return response.data;
+};
+
+export const deleteChat = async (chatId: string): Promise<IChats> => {
+  const response = await instance.delete(`/chats/${chatId}`);
+  return response.data;
+};

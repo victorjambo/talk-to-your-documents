@@ -15,4 +15,5 @@ export interface IAppData {
   errorFetchConversations: Error | null;
   setConversations: Dispatch<SetStateAction<IConversation[]>>;
   chatName: string;
+  refetchChats: () => void;
 }
