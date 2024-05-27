@@ -28,7 +28,10 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
     onError: (error, variables, context) => {
       console.log("🚀 ~ Error while querying:", { error, variables, context });
     },
-    onSuccess: () => refetchChats(),
+    onSuccess: () => {
+      refetchChats();
+      setSelectedChat(null);
+    },
   });
 
   const handleNewChat = () => {

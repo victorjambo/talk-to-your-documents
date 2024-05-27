@@ -39,6 +39,11 @@ class ChatModel implements IChatModel {
       include: {
         conversations: includeConversations,
       },
+      orderBy: [
+        {
+          createdAt: "desc",
+        },
+      ],
     });
   }
 
@@ -56,7 +61,6 @@ class ChatModel implements IChatModel {
     });
   }
 
-  // TODO: cascade delete
   public async deleteChat(chatId: string): Promise<Chat> {
     return this.prisma.chat.delete({
       where: { id: chatId },
