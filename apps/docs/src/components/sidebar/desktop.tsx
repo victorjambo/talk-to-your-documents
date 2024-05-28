@@ -65,7 +65,7 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
               </div>
               <ul role="list" className="-mx-2 mt-2 space-y-1">
                 {chats.map((chat) => (
-                  <li key={chat.title} className="relative">
+                  <li key={chat.id} className="relative">
                     {selectedChat?.id === chat.id ? (
                       <form action={() => mutate()}>
                         <input

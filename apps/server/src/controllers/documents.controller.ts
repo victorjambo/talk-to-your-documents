@@ -10,6 +10,8 @@ import type {
   IDocumentUpdateRequest,
   IDocumentsController,
 } from "../types";
+import { hashCode } from "../helpers/hashCode";
+import { JsonArray } from "@prisma/client/runtime/library";
 
 class DocumentsController implements IDocumentsController {
   public async createDocument(
@@ -29,31 +31,47 @@ class DocumentsController implements IDocumentsController {
       const body = req.body;
       const chatId = body.chatId;
       const chatModal = new ChatModal();
-      const fileNames = files.map((file) => file.originalname);
+
+      const filesMeta = files.map((file) => ({
+        name: file.originalname,
+        size: file.size,
+        type: file.mimetype,
+        hash: hashCode(`${file.originalname}-${file.size}-${file.mimetype}`),
+      })) as JsonArray;
 
       if (chatId) {
         chat = await chatModal.getChat(chatId);
+        filesMeta.concat(chat.filesMeta);
         chatModal.updateChat(chatId, {
           ...chat,
-          fileNames: [...chat.fileNames, ...fileNames],
+          filesMeta,
         });
       } else {
         const title = body.chatName ?? "Untitled";
-        chat = await chatModal.createChat({ title, fileNames });
+        chat = await chatModal.createChat({ title, filesMeta });
       }
 
       const documentLoader = new DocumentLoaders(files);
       const documents = await documentLoader.load();
 
-      const texts = await Promise.all(
-        documents.map((document) =>
-          DocumentManagement.splitText(document.pageContent)
-        )
-      ).then((documentText) => documentText.flat());
+      const documentTexts = await Promise.all(
+        documents.map(async (docs) => {
+          const document = await Promise.all(
+            docs.document.map((document) =>
+              DocumentManagement.splitText(document.pageContent)
+            )
+          ).then((documentText) => documentText.flat());
+
+          return {
+            hash: docs.hash,
+            document: document,
+          };
+        })
+      );
 
       const model = new DocumentsModel();
 
-      await model.createDocument(texts, chat.id);
+      await model.createDocument(documentTexts, chat.id);
 
       res.status(201).json({ chatId: chat.id });
     } catch (err) {
@@ -81,14 +99,17 @@ class DocumentsController implements IDocumentsController {
       const chatModal = new ChatModal();
       const chat = await chatModal.getChat(chatId);
 
+      const filesMeta = files.map((file) => ({
+        name: file.originalname,
+        size: file.size,
+        type: file.mimetype,
+        hash: hashCode(`${file.originalname}-${file.size}-${file.mimetype}`),
+      })) as JsonArray;
+      filesMeta.concat(chat.filesMeta);
+
       const updatedChatData: Chat = {
         ...chat,
-        fileNames: [
-          ...new Set([
-            ...chat.fileNames,
-            ...files.map((file) => file.originalname),
-          ]),
-        ],
+        filesMeta,
       };
 
       await chatModal.updateChat(chatId, updatedChatData);
@@ -96,15 +117,24 @@ class DocumentsController implements IDocumentsController {
       const documentLoader = new DocumentLoaders(files);
       const documents = await documentLoader.load();
 
-      const texts = await Promise.all(
-        documents.map((document) =>
-          DocumentManagement.splitText(document.pageContent)
-        )
-      ).then((documentText) => documentText.flat());
+      const documentTexts = await Promise.all(
+        documents.map(async (docs) => {
+          const document = await Promise.all(
+            docs.document.map((document) =>
+              DocumentManagement.splitText(document.pageContent)
+            )
+          ).then((documentText) => documentText.flat());
+
+          return {
+            hash: docs.hash,
+            document: document,
+          };
+        })
+      );
 
       const model = new DocumentsModel();
 
-      await model.createDocument(texts, chat.id);
+      await model.createDocument(documentTexts, chat.id);
 
       res.status(200).json({ chatId: chat.id });
     } catch (err) {

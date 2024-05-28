@@ -7,7 +7,9 @@ import type {
   IChatsController,
   IGetChatsRequest,
   IUpdateChatRequest,
+  IDeleteFileFromChatRequest,
 } from "../types";
+import DocumentsModel from "../models/documents.model";
 
 class ChatsController implements IChatsController {
   public async getChat(req: IGetChatRequest, res: Response): Promise<void> {
@@ -95,7 +97,7 @@ class ChatsController implements IChatsController {
       const updatedChat = await chatModel.updateChat(chatId, {
         ...chat,
         title,
-        fileNames,
+        // fileNames, TODO
       });
 
       res.status(200).json({ chat: updatedChat });
@@ -121,6 +123,32 @@ class ChatsController implements IChatsController {
       const chat = await chatModel.deleteChat(chatId);
 
       res.status(200).json({ chat });
+    } catch (err) {
+      console.log("🚀 ~ ChatsController ~ getChat ~ err:", err);
+      res.status(500).json({
+        error: err,
+      });
+    }
+  }
+
+  public async deleteFileFromChat(req: IDeleteFileFromChatRequest, res: Response): Promise<void> {
+    try {
+      const chatId = req.params.chatId;
+      const hash = req.params.hash;
+      if (!chatId && !hash) {
+        res.status(400).json({
+          error: "chatId and hash param are required",
+        });
+        return;
+      }
+
+      const chatModel = new ChatModel();
+      const chat = await chatModel.deleteFileFromChat(chatId, hash);
+
+      const documentModel = new DocumentsModel();
+      const document = await documentModel.deleteFileByHashCode(hash);
+
+      res.status(200).json({ chat, count: document.count });
     } catch (err) {
       console.log("🚀 ~ ChatsController ~ getChat ~ err:", err);
       res.status(500).json({

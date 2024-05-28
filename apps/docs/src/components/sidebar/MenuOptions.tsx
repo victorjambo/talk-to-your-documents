@@ -22,7 +22,7 @@ interface Props {
 }
 
 const MenuOptions: React.FC<Props> = ({ chat, setSelectedChat }) => {
-  const { refetchChats } = useAppData();
+  const { refetchChats, setChatId } = useAppData();
 
   const { mutate } = useMutation({
     mutationKey: ["deleteChat"],
@@ -30,7 +30,10 @@ const MenuOptions: React.FC<Props> = ({ chat, setSelectedChat }) => {
     onError: (error, variables, context) => {
       console.log("🚀 ~ Error while querying:", { error, variables, context });
     },
-    onSuccess: () => refetchChats(),
+    onSuccess: () => {
+      refetchChats()
+      setChatId("");
+    },
   });
 
   return (

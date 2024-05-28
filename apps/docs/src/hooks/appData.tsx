@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { QueryClient, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
-import { IAppData, IConversation } from "../types";
+import { IAppData, IConversation, IFilesMeta } from "../types";
 import { fetchChat, fetchChats, fetchConversations } from "../queries";
 
 export const initialAppData: IAppData = {
@@ -18,7 +18,8 @@ export const initialAppData: IAppData = {
   setConversations: () => {},
   chatName: "",
   setChatName: () => {},
-  refetchChats: () => {}
+  refetchChats: () => {},
+  refetchConversations: () => {},
 };
 
 export const AppDataContext = createContext<IAppData>(initialAppData);
@@ -28,7 +29,7 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
 }) => {
   const [chatId, setChatId] = useState<string>("");
   const [chatName, setChatName] = useState<string>("");
-  const [files, setFiles] = useState<string[]>([]);
+  const [files, setFiles] = useState<IFilesMeta[]>([]);
   const [conversations, setConversations] = useState<IConversation[]>([]);
 
   const {
@@ -45,12 +46,12 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
     isPending: isPendingFetchConversations,
     error: errorFetchConversations,
     data: dataFetchConversations,
+    refetch: refetchConversations,
   } = useQuery({
     queryKey: ["conversations", chatId],
     queryFn: async () => {
       const chat = await fetchChat(chatId);
-
-      setFiles(chat.chat.fileNames ?? null);
+      setFiles(chat.chat.filesMeta ?? null);
 
       return fetchConversations(chatId);
     },
@@ -85,7 +86,8 @@ export const AppDataProvider: React.FC<{ children: JSX.Element }> = ({
         setConversations,
         chatName,
         setChatName,
-        refetchChats
+        refetchChats,
+        refetchConversations
       }}
     >
       {children}

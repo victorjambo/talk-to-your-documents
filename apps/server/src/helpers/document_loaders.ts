@@ -4,27 +4,40 @@ import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { Document } from "@langchain/core/documents";
 
 import { SupportedFileTypes } from "./supported_file_types";
+import { hashCode } from "./hashCode";
 
 class DocumentLoaders {
-  private blobs: { fieType: string; blob: Blob }[];
+  private blobs: { fileType: string; blob: Blob; hash: string }[];
 
   constructor(files: Express.Multer.File[]) {
     this.blobs = files.map((file) => ({
-      fieType: file.mimetype,
+      fileType: file.mimetype,
       blob: new Blob([file.buffer]),
+      hash: hashCode(`${file.originalname}-${file.size}-${file.mimetype}`),
     }));
   }
 
-  public async load(): Promise<Document<Record<string, any>>[]> {
+  public async load(): Promise<
+    { document: Document<Record<string, any>>[]; hash: string }[]
+  > {
     return Promise.all(
-      this.blobs.map(async ({ fieType, blob }) => {
-        switch (fieType) {
+      this.blobs.map(async ({ fileType, blob, hash }) => {
+        switch (fileType) {
           case SupportedFileTypes.txt:
-            return this.textLoader(blob).load();
+            return {
+              document: await this.textLoader(blob).load(),
+              hash,
+            };
           case SupportedFileTypes.pdf:
-            return this.pdfLoader(blob).load();
+            return {
+              document: await this.pdfLoader(blob).load(),
+              hash,
+            };
           case SupportedFileTypes.docx:
-            return this.docxLoader(blob).load();
+            return {
+              document: await this.docxLoader(blob).load(),
+              hash,
+            };
           default:
             throw new Error("Unsupported file type");
         }

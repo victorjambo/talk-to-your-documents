@@ -1,7 +1,7 @@
 import { Chat } from ".prisma";
 
 export interface IChatModel {
-  createChat(data: { title: string; fileNames?: string[] }): Promise<Chat>;
+  createChat(data: { title: string; filesMeta?: string[] }): Promise<Chat>;
 
   getChat(chatId: string, includeConversations?: boolean): Promise<Chat>;
 

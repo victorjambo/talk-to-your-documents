@@ -28,14 +28,15 @@ const documentsRouter = (): Router => {
 };
 
 const chatsRouter = (): Router => {
-  const documentsController = new ChatsController();
+  const chatsController = new ChatsController();
   const router = Router();
 
-  router.post("/", documentsController.createChat);
-  router.get("/", documentsController.getChats);
-  router.get("/:chatId", documentsController.getChat);
-  router.put("/:chatId", documentsController.updateChat);
-  router.delete("/:chatId", documentsController.deleteChat);
+  router.post("/", chatsController.createChat);
+  router.get("/", chatsController.getChats);
+  router.get("/:chatId", chatsController.getChat);
+  router.put("/:chatId", chatsController.updateChat);
+  router.delete("/:chatId", chatsController.deleteChat);
+  router.delete("/:chatId/files/:hash", chatsController.deleteFileFromChat);
 
   return router;
 };

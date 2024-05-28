@@ -1,12 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
-import { INavbarChats } from "./IChats";
+import { IFilesMeta, INavbarChats } from "./IChats";
 import { IConversation } from "./IConversation";
 
 export interface IAppData {
   conversations: IConversation[];
   chats: INavbarChats[];
-  files: string[];
-  setFiles: Dispatch<SetStateAction<string[]>>;
+  files: IFilesMeta[];
+  setFiles: Dispatch<SetStateAction<IFilesMeta[]>>;
   chatId: string;
   setChatId: Dispatch<SetStateAction<string>>;
   isPendingFetchChats: boolean;
@@ -17,4 +17,5 @@ export interface IAppData {
   chatName: string;
   setChatName: Dispatch<SetStateAction<string>>;
   refetchChats: () => void;
+  refetchConversations: () => void;
 }

@@ -1,6 +1,7 @@
 import { PrismaClient, Chat } from ".prisma";
 import type { IChatModel } from "../types";
 import { extendConversations } from "../helpers/prisma_extend";
+import { JsonArray, JsonValue } from "@prisma/client/runtime/library";
 
 class ChatModel implements IChatModel {
   protected prisma: PrismaClient;
@@ -11,10 +12,13 @@ class ChatModel implements IChatModel {
 
   public async createChat(data: {
     title: string;
-    fileNames?: string[];
+    filesMeta?: JsonArray;
   }): Promise<Chat> {
     return this.prisma.chat.create({
-      data,
+      data: {
+        title: data.title,
+        filesMeta: data.filesMeta ?? {},
+      },
     });
   }
 
@@ -54,7 +58,10 @@ class ChatModel implements IChatModel {
   ): Promise<Chat> {
     return this.prisma.chat.update({
       where: { id: chatId },
-      data,
+      data: {
+        ...data,
+        filesMeta: data.filesMeta ?? {},
+      },
       include: {
         conversations: includeConversations,
       },
@@ -64,6 +71,21 @@ class ChatModel implements IChatModel {
   public async deleteChat(chatId: string): Promise<Chat> {
     return this.prisma.chat.delete({
       where: { id: chatId },
+    });
+  }
+
+  public async deleteFileFromChat(chatId: string, hash: string): Promise<Chat> {
+    const chat = await this.getChat(chatId);
+
+    let filesMeta = chat.filesMeta as JsonArray;
+
+    filesMeta = filesMeta.filter((item: any) => item.hash !== hash);
+
+    return this.prisma.chat.update({
+      where: { id: chatId },
+      data: {
+        filesMeta,
+      },
     });
   }
 }

@@ -18,6 +18,7 @@ model Document {
   id      String                 @id @default(cuid())
   content String
   vector  Unsupported("vector")?
+  hash    String?
 
   chat   Chat?   @relation(fields: [chatId], references: [id], onDelete: Cascade)
   chatId String?
@@ -26,9 +27,9 @@ model Document {
 }
 
 model Chat {
-  id        String   @id @default(cuid())
+  id        String @id @default(cuid())
   title     String
-  fileNames String[] @default([])
+  filesMeta Json?   @default("{}")
 
   documents     Document[]
   conversations conversations[]

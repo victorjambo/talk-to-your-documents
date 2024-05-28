@@ -28,7 +28,8 @@ const UploadFiles: React.FC<{ isNewUpload: boolean }> = ({ isNewUpload }) => {
               (idx) => rawFiles.item(idx)?.name
             ) as string[])
           : [];
-      setFiles([...files, ...fileNames]);
+      // setFiles([...files, ...fileNames]);
+      // TODO
     },
     onSettled: () => {
       formRef.current?.reset();

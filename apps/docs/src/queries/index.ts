@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IChats, IConversation, INavbarChats } from "../types";
+import { IChats, IConversation, IFilesMeta, INavbarChats } from "../types";
 
 // TODO env variable
 const BASE_URL = "http://localhost:4000/api";
@@ -81,7 +81,7 @@ export const uploadDocuments = async (
 
 export const updateChat = async (
   chatId: string,
-  chat: { chatName?: string; fileNames?: string[] }
+  chat: { chatName?: string; filesMeta?: IFilesMeta[] }
 ): Promise<IChats | null> => {
   if (!chatId) return null;
 
@@ -91,5 +91,13 @@ export const updateChat = async (
 
 export const deleteChat = async (chatId: string): Promise<IChats> => {
   const response = await instance.delete(`/chats/${chatId}`);
+  return response.data;
+};
+
+export const deleteFileFromChat = async (
+  chatId: string,
+  hash: string
+): Promise<{ chat: IChats; count: number }> => {
+  const response = await instance.delete(`/chats/${chatId}/files/${hash.toString()}`);
   return response.data;
 };
