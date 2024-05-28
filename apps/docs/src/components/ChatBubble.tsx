@@ -1,5 +1,6 @@
 import React from "react";
 import { IConversation } from "../types";
+import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline";
 
 interface Props {
   chat: IConversation;

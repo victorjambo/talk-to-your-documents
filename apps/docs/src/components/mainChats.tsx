@@ -12,15 +12,17 @@ const MainChats: React.FC = () => {
 
   const { chatId, setConversations, conversations, chatName } = useAppData();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
+    mutationKey: ["createConversations"],
     mutationFn: (query: string) =>
       createConversations({
         query,
         chatId,
       }),
     onMutate: (variables) => {
+      formRef.current?.reset();
+
       const newConversation = [
-        ...conversations,
         {
           id: conversations.length + 1,
           message: variables,
@@ -28,6 +30,7 @@ const MainChats: React.FC = () => {
           createdAt: new Date(),
           sender: "human",
         },
+        ...conversations,
       ];
       setConversations(newConversation);
       return variables;
@@ -37,7 +40,6 @@ const MainChats: React.FC = () => {
     },
     onSuccess: (data, variables, context) => {
       const newConversation = [
-        ...conversations,
         {
           id: conversations.length + 1,
           message: data.message,
@@ -45,6 +47,7 @@ const MainChats: React.FC = () => {
           createdAt: new Date(),
           sender: "ai",
         },
+        ...conversations,
       ];
       setConversations(newConversation);
     },
@@ -78,8 +81,9 @@ const MainChats: React.FC = () => {
         />
         <div className="absolute right-0 bottom-0 flex justify-between m-4">
           <button
+            disabled={!isPending}
             type="submit"
-            className="inline-flex space-x-1 items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className={`inline-flex space-x-1 items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${isPending?'opacity-75 cursor-not-allowed':''}`}
           >
             <ChatBubbleLeftRightIcon className="w-5 h-5" />
             <span>Ask</span>

@@ -4,6 +4,7 @@ import ChatBubble from "./ChatBubble";
 import { IConversation } from "../types";
 import { useAppData } from "../hooks/appData";
 import { FaceSmileIcon } from "@heroicons/react/24/outline";
+import LoadingChatBubble from "./LoadingChatBubble";
 
 const ChatBubbles: React.FC = () => {
   const {
@@ -22,6 +23,8 @@ const ChatBubbles: React.FC = () => {
 
   return (
     <div className="pt-4 max-h-[600px] overflow-scroll flex flex-col-reverse">
+      <LoadingChatBubble />
+
       {conversations?.length ? (
         conversations.map((conversation: IConversation) => (
           <ChatBubble key={conversation.id} chat={conversation} />
