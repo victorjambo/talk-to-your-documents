@@ -1,4 +1,13 @@
 // Borrowed from https://stackoverflow.com/a/52171480
+
+/**
+ * This function generates a hash code for a given string.
+ * The hash code is a 32-bit signed integer.
+ * We use the hash as a unique document identifier when we need to delete a specific document from the database. 
+ * @param str String.
+ * @param seed Seed.
+ * @returns 
+ */
 export const hashCode = (str: string, seed = 0): string => {
   let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
   for(let i = 0, ch; i < str.length; i++) {
