@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 import { classNames } from "../../utils/classNames";
@@ -7,7 +7,8 @@ import { INavbarChats } from "../../types";
 import { useAppData } from "../../hooks/appData";
 import MenuOptions from "./MenuOptions";
 import { useMutation } from "@tanstack/react-query";
-import { updateChat } from "../../queries";
+import { createChat, updateChat } from "../../queries";
+import StartNewChat from "../StartNewChat";
 
 interface Props {
   chats: INavbarChats[];
@@ -17,6 +18,7 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
   const { chatId, setChatId, refetchChats, setChatName } = useAppData();
 
   const [selectedChat, setSelectedChat] = useState<INavbarChats | null>(null);
+  const [openNewChat, setOpenNewChat] = useState<boolean>(false);
 
   const { mutate } = useMutation({
     mutationKey: ["updateChat"],
@@ -37,6 +39,7 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
   const handleNewChat = () => {
     setChatName("");
     setChatId("");
+    setOpenNewChat(true);
   };
 
   const handleInputOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -64,6 +67,7 @@ const DesktopSidebar: React.FC<Props> = ({ chats }) => {
                 </button>
               </div>
               <ul role="list" className="-mx-2 mt-2 space-y-1">
+                <StartNewChat openNewChat={openNewChat} setOpenNewChat={setOpenNewChat} />
                 {chats.map((chat) => (
                   <li key={chat.id} className="relative">
                     {selectedChat?.id === chat.id ? (
