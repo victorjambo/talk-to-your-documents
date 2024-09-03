@@ -116,26 +116,15 @@ const MainChats: React.FC = () => {
           )}
           validators={{
             onSubmit: ({ value }) => {
-              console.log("🚀 ~ value", value);
               return value === "" ? "Ask a question first" : undefined;
             },
           }}
         />
-        {/* <textarea
-          rows={4}
-          id="prompt"
-          name="prompt"
-          className="w-full p-3 rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600"
-          placeholder={
-            chatId ? "talk to your documents..." : "Start a conversation..."
-          }
-          // onKeyDown={} TODO: Add keydown event to submit form
-        /> */}
         <div className="absolute right-0 bottom-0 flex justify-between m-4">
           <button
-            disabled={isPending}
+            disabled={isPending || !chatId}
             type="submit"
-            className={`inline-flex space-x-1 items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${isPending ? "opacity-75 cursor-not-allowed" : ""}`}
+            className={`inline-flex space-x-1 items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${isPending || !chatId ? "opacity-75 cursor-not-allowed" : ""}`}
           >
             <ChatBubbleLeftRightIcon className="w-5 h-5" />
             <span>Ask</span>
