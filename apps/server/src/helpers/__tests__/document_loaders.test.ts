@@ -1,5 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
 import { file, loadFiles } from "./helpers";
+import { SupportedFileTypes } from "../supported_file_types";
 
 describe("DocumentLoaders", () => {
   test("Load .txt files", async () => {
@@ -7,7 +8,7 @@ describe("DocumentLoaders", () => {
       {
         ...file,
         originalname: "test.txt",
-        mimetype: "text/plain",
+        mimetype: SupportedFileTypes.txt,
         filename: "test.txt",
         path: "test.txt",
       },
@@ -23,7 +24,7 @@ describe("DocumentLoaders", () => {
       {
         ...file,
         originalname: "test.pdf",
-        mimetype: "application/pdf",
+        mimetype: SupportedFileTypes.pdf,
         filename: "test.pdf",
         path: "test.pdf",
       },
@@ -39,8 +40,7 @@ describe("DocumentLoaders", () => {
       {
         ...file,
         originalname: "test.docx",
-        mimetype:
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        mimetype: SupportedFileTypes.docx,
         filename: "test.docx",
         path: "test.docx",
       },
