@@ -47,13 +47,18 @@ const UploadFiles: React.FC<{ isNewUpload: boolean }> = ({ isNewUpload }) => {
 
   return (
     <form action={handleSubmit} ref={formRef}>
-      <label className="border rounded-lg border-dashed border-gray-300 hover:border-gray-400 p-4 cursor-pointer flex flex-col items-center space-x-2 justify-center">
+      <label
+        className={`border rounded-lg border-dashed border-gray-300 hover:border-gray-400 p-4 flex flex-col items-center space-x-2 justify-center ${chatId ? "cursor-pointer" : "cursor-not-allowed text-gray-400"}`}
+      >
         <ArrowUpTrayIcon className="w-6 h-6" />
         {isNewUpload ? (
           <span>Upload files</span>
         ) : (
           <span>Upload more files</span>
         )}
+        <span className="text-xs text-gray-400">
+          Accepted files; .pdf, .txt, .docx
+        </span>
         <input
           type="file"
           id="documents"
@@ -62,6 +67,7 @@ const UploadFiles: React.FC<{ isNewUpload: boolean }> = ({ isNewUpload }) => {
           multiple
           className="hidden"
           onChange={(e) => setRawFiles(e.target.files)}
+          disabled={!chatId}
         />
       </label>
 
