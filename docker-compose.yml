@@ -12,11 +12,11 @@ services:
     environment:
       - PORT=3000
 
-  docs:
-    container_name: docs
+  client:
+    container_name: client
     build:
       context: .
-      dockerfile: ./apps/docs/Dockerfile
+      dockerfile: ./apps/client/Dockerfile
     restart: always
     ports:
       - 3001:3001

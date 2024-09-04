@@ -21,7 +21,7 @@ importers:
         specifier: latest
         version: 2.1.1
 
-  apps/docs:
+  apps/client:
     dependencies:
       '@headlessui/react':
         specifier: ^2.0.3
