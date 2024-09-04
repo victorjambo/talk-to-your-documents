@@ -6,12 +6,13 @@ import { useAppData } from "../hooks/appData";
 import { uploadDocuments, uploadUpdateDocuments } from "../queries";
 
 const UploadFiles: React.FC<{ isNewUpload: boolean }> = ({ isNewUpload }) => {
-  const { chatId, setFiles, files, chatName } = useAppData();
+  const { chatId, setFiles, files, chatName, refetchConversations } =
+    useAppData();
 
   const formRef = useRef<any>();
   const [rawFiles, setRawFiles] = useState<FileList | null>(null);
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: (data: FormData) => {
       if (isNewUpload) {
         return uploadDocuments(data);
@@ -30,6 +31,7 @@ const UploadFiles: React.FC<{ isNewUpload: boolean }> = ({ isNewUpload }) => {
           : [];
       // setFiles([...files, ...fileNames]);
       // TODO
+      refetchConversations();
     },
     onSettled: () => {
       formRef.current?.reset();
@@ -91,9 +93,10 @@ const UploadFiles: React.FC<{ isNewUpload: boolean }> = ({ isNewUpload }) => {
       {rawFiles !== null && (
         <button
           type="submit"
-          className="w-full text-center mt-4 rounded-md bg-indigo-600 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className={`w-full text-center mt-4 rounded-md bg-indigo-600 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${isPending ? "cursor-not-allowed opacity-70" : "cursor-pointer"}`}
+          disabled={isPending}
         >
-          Upload
+          {isPending ? "Uploading..." : "Upload"}
         </button>
       )}
     </form>
