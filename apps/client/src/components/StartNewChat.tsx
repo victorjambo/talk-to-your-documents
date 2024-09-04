@@ -58,6 +58,8 @@ const StartNewChat: FC<IProps> = ({ openNewChat, setOpenNewChat }) => {
       setChatId(res.chat.id);
       refetchChats();
       setChatName(res.chat.title);
+      setOpenNewChat(false);
+      setNewChatName("");
     },
   });
 
