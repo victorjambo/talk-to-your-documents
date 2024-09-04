@@ -4,7 +4,7 @@ import { Chat } from ".prisma";
 import DocumentsModel from "../models/documents.model";
 import DocumentLoaders from "../helpers/document_loaders";
 import DocumentManagement from "../helpers/document_management";
-import ChatModal from "../models/chat.model";
+import ChatModel from "../models/chat.model";
 import type {
   IDocumentCreateRequest,
   IDocumentUpdateRequest,
@@ -30,7 +30,7 @@ class DocumentsController implements IDocumentsController {
       let chat: Chat;
       const body = req.body;
       const chatId = body.chatId;
-      const chatModal = new ChatModal();
+      const chatModel = new ChatModel();
 
       const filesMeta = files.map((file) => ({
         name: file.originalname,
@@ -40,15 +40,15 @@ class DocumentsController implements IDocumentsController {
       })) as JsonArray;
 
       if (chatId) {
-        chat = await chatModal.getChat(chatId);
+        chat = await chatModel.getChat(chatId);
         filesMeta.concat(chat.filesMeta);
-        chatModal.updateChat(chatId, {
+        chatModel.updateChat(chatId, {
           ...chat,
           filesMeta,
         });
       } else {
         const title = body.chatName ?? "Untitled";
-        chat = await chatModal.createChat({ title, filesMeta });
+        chat = await chatModel.createChat({ title, filesMeta });
       }
 
       const documentLoader = new DocumentLoaders(files);
@@ -96,8 +96,8 @@ class DocumentsController implements IDocumentsController {
         return;
       }
 
-      const chatModal = new ChatModal();
-      const chat = await chatModal.getChat(chatId);
+      const chatModel = new ChatModel();
+      const chat = await chatModel.getChat(chatId);
 
       const filesMeta = files.map((file) => ({
         name: file.originalname,
@@ -112,7 +112,7 @@ class DocumentsController implements IDocumentsController {
         filesMeta,
       };
 
-      await chatModal.updateChat(chatId, updatedChatData);
+      await chatModel.updateChat(chatId, updatedChatData);
 
       const documentLoader = new DocumentLoaders(files);
       const documents = await documentLoader.load();
