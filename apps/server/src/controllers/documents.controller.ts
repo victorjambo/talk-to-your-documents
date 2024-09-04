@@ -19,6 +19,7 @@ class DocumentsController implements IDocumentsController {
     res: Response
   ): Promise<void> {
     try {
+      // Validations
       const files = req.files;
       if (!files || !files.length) {
         res.status(400).json({
@@ -30,8 +31,8 @@ class DocumentsController implements IDocumentsController {
       let chat: Chat;
       const body = req.body;
       const chatId = body.chatId;
-      const chatModel = new ChatModel();
 
+      // Get file meta data
       const filesMeta = files.map((file) => ({
         name: file.originalname,
         size: file.size,
@@ -39,6 +40,8 @@ class DocumentsController implements IDocumentsController {
         hash: hashCode(`${file.originalname}-${file.size}-${file.mimetype}`),
       })) as JsonArray;
 
+      // Check if chatId is provided. Else create a new chat
+      const chatModel = new ChatModel();
       if (chatId) {
         chat = await chatModel.getChat(chatId);
         filesMeta.concat(chat.filesMeta);
@@ -51,9 +54,11 @@ class DocumentsController implements IDocumentsController {
         chat = await chatModel.createChat({ title, filesMeta });
       }
 
+      // Load documents
       const documentLoader = new DocumentLoaders(files);
       const documents = await documentLoader.load();
 
+      // Split text into chunks
       const documentTexts = await Promise.all(
         documents.map(async (docs) => {
           const document = await Promise.all(
@@ -69,8 +74,8 @@ class DocumentsController implements IDocumentsController {
         })
       );
 
+      // Save chunks of texts to database
       const model = new DocumentsModel();
-
       await model.createDocument(documentTexts, chat.id);
 
       res.status(201).json({ chatId: chat.id });
@@ -133,7 +138,6 @@ class DocumentsController implements IDocumentsController {
       );
 
       const model = new DocumentsModel();
-
       await model.createDocument(documentTexts, chat.id);
 
       res.status(200).json({ chatId: chat.id });

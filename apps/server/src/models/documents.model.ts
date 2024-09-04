@@ -1,5 +1,6 @@
+import prisma from "../helpers/client";
 import DatabaseManagement from "../helpers/database";
-import { PrismaClient, Prisma } from ".prisma";
+import { Prisma } from ".prisma";
 
 class DocumentsModel extends DatabaseManagement {
   private static tableName = "Document";
@@ -49,15 +50,15 @@ class DocumentsModel extends DatabaseManagement {
   public async deleteFileByHashCode(
     hash: string
   ): Promise<Prisma.BatchPayload> {
-    const prisma = new PrismaClient();
+    const _prisma = prisma;
 
-    const documents = await prisma.document.findMany({
+    const documents = await _prisma.document.findMany({
       where: {
         hash,
       },
     });
 
-    return prisma.document.deleteMany({
+    return _prisma.document.deleteMany({
       where: {
         id: {
           in: documents.map((doc) => doc.id),

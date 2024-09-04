@@ -10,6 +10,7 @@ import {
 
 import { PrismaClient, Prisma, Document } from ".prisma";
 import type { TDocumentStore } from "../types";
+import prisma from "./client";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const OPENAI_LLM_MODEL = process.env.OPENAI_LLM_MODEL;
@@ -23,7 +24,7 @@ class DatabaseManagement {
   protected historyTableName: string;
 
   constructor(tableName: string, historyTableName?: string) {
-    this.db = new PrismaClient();
+    this.db = prisma;
     this.tableName = tableName;
     this.historyTableName = historyTableName ?? "conversations";
   }

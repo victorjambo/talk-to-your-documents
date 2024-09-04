@@ -6,6 +6,9 @@ import { Document } from "@langchain/core/documents";
 import { SupportedFileTypes } from "./supported_file_types";
 import { hashCode } from "./hashCode";
 
+/**
+ * Helper class to load/read different file types.
+ */
 class DocumentLoaders {
   private blobs: { fileType: string; blob: Blob; hash: string }[];
 

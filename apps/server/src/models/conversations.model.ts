@@ -9,18 +9,19 @@ import { PrismaClient } from ".prisma";
 import type { IConversation, IConversationsModel } from "../types";
 import DatabaseManagement from "../helpers/database";
 import { extendConversations } from "../helpers/prisma_extend";
+import prisma from "../helpers/client";
 
 class ConversationsModel implements IConversationsModel {
   protected prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = prisma;
   }
 
   public async getConversations(chatId: string): Promise<IConversation[]> {
-    const prisma = new PrismaClient().$extends(extendConversations);
+    const _prisma = prisma.$extends(extendConversations);
 
-    return prisma.conversations.findMany({
+    return _prisma.conversations.findMany({
       where: { session_id: chatId },
       orderBy: [
         {

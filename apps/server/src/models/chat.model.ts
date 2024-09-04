@@ -1,13 +1,14 @@
 import { PrismaClient, Chat } from ".prisma";
 import type { IChatModel } from "../types";
 import { extendConversations } from "../helpers/prisma_extend";
-import { JsonArray, JsonValue } from "@prisma/client/runtime/library";
+import { JsonArray } from "@prisma/client/runtime/library";
+import prisma from "../helpers/client";
 
 class ChatModel implements IChatModel {
   protected prisma: PrismaClient;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = prisma;
   }
 
   public async createChat(data: {
@@ -37,9 +38,9 @@ class ChatModel implements IChatModel {
   public async getChats(
     includeConversations: boolean = false
   ): Promise<Chat[]> {
-    const prisma = new PrismaClient().$extends(extendConversations);
+    const _prisma = prisma.$extends(extendConversations);
 
-    return prisma.chat.findMany({
+    return _prisma.chat.findMany({
       include: {
         conversations: includeConversations,
       },
