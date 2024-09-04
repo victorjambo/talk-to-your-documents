@@ -5,4 +5,5 @@ module.exports = {
     "^.+.tsx?$": ["ts-jest", {}],
   },
   testPathIgnorePatterns: ["__tests__/helpers.ts"],
+  setupFilesAfterEnv: ['<rootDir>/src/singleton.ts'],
 };
